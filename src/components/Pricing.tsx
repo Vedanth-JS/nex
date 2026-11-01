@@ -31,14 +31,23 @@ export const Pricing: React.FC<PricingProps> = ({ onSelectPlan, onOpenConsultati
             <span>Honest, Transparent Starting Prices</span>
           </div>
           <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-            Affordable Website Packages <br />
+            Professional Websites.{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-300">
-              Without Compromising On Quality
+              Affordable Packages.
             </span>
           </h2>
-          <p className="text-slate-300 text-base sm:text-lg mt-4 leading-relaxed">
+          <p className="text-slate-300 text-base sm:text-lg mt-4 leading-relaxed max-w-2xl mx-auto">
             High-converting websites engineered to fit your budget. Simple, straightforward packages with zero hidden markups.
           </p>
+          <div className="mt-6 flex justify-center">
+            <button
+              onClick={onOpenConsultation}
+              className="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-cyan-300 border border-cyan-500/30 text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-sm hover:scale-105"
+            >
+              <span>Compare All Package Features</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
 
         {/* 3 Pricing Cards Grid with 3D Tilt */}

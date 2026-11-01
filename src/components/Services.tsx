@@ -64,9 +64,9 @@ export const Services: React.FC<ServicesProps> = ({
             <span>High-Impact Web Solutions</span>
           </div>
           <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-            Specialized Website Services <br />
+            Everything Your Business <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-300">
-              Engineered for Your Business Model
+              Needs to Grow Online.
             </span>
           </h2>
           <p className="text-slate-300 text-base sm:text-lg mt-4 leading-relaxed">
@@ -121,14 +121,14 @@ export const Services: React.FC<ServicesProps> = ({
                     </ul>
                   </div>
 
-                  {/* Card Actions: Learn More & Get a Quote per requirements */}
+                  {/* Card Actions: Explore Service & Get a Quote per requirements */}
                   <div style={{ transform: 'translateZ(30px)' }} className="grid grid-cols-2 gap-2.5 pt-4 border-t border-white/10 mt-auto">
                     <button
                       onClick={() => onOpenServiceDetail(srv.id)}
                       className="py-3 rounded-xl bg-white/5 hover:bg-white/15 text-slate-200 hover:text-white text-xs font-bold flex items-center justify-center gap-1.5 border border-white/10 transition-colors cursor-pointer"
                     >
                       <Info className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Learn More</span>
+                      <span>Explore Service</span>
                     </button>
 
                     <button

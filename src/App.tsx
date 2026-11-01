@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { TrustAndValue } from './components/TrustAndValue';
 import { ScrollShowcase3D } from './components/3d/ScrollShowcase3D';
 import { BusinessProblem } from './components/BusinessProblem';
 import { Services } from './components/Services';
@@ -13,6 +14,7 @@ import { WhyChooseUs } from './components/WhyChooseUs';
 import { HowWeWork } from './components/HowWeWork';
 import { ExpectationsSection } from './components/ExpectationsSection';
 import { About } from './components/About';
+import { FinalCTA } from './components/FinalCTA';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
@@ -121,8 +123,11 @@ export function App() {
 
       {/* Main Content */}
       <main>
-        {/* 4. Hero Section with 3D Three.js Background & Mockup Preview */}
+        {/* 3. Hero Section: Two-Column with Animated Website Mockups */}
         <Hero onOpenDemo={handleOpenDemo} />
+
+        {/* 4. Trust and Value Section (4 Benefits) */}
+        <TrustAndValue />
 
         {/* 3D Scrolling Image Showcase & Real-Time Motion Gallery */}
         <div id="showcase">
@@ -132,7 +137,7 @@ export function App() {
           />
         </div>
 
-        {/* Business Problem Section: "Your Customers Are Online. Is Your Business?" */}
+        {/* 5. Business Problem Section: "Your Customers Are Online. Is Your Business?" */}
         <BusinessProblem 
           onBuildWebsite={() => {
             const contactEl = document.getElementById('contact');
@@ -140,19 +145,19 @@ export function App() {
           }} 
         />
 
-        {/* 5. Services Section with 3D Tilt Cards */}
+        {/* 6. Services Preview with 3D Tilt Cards */}
         <Services 
           onSelectService={handleSelectService}
           onOpenServiceDetail={handleOpenServiceDetail}
         />
 
-        {/* 6. Industries We Serve (12 Industries Interactive Grid with 3D Tilt) */}
+        {/* Industries We Serve (12 Industries Interactive Grid with 3D Tilt) */}
         <Industries 
           onOpenDemo={handleOpenDemo}
           onSelectIndustry={handleSelectIndustry}
         />
 
-        {/* 7. Working Website Demonstrations (6 Live Demos with 3D Tilt) */}
+        {/* 7. Live Website Showcase (6 Live Working Demos) */}
         <DemosSection 
           onOpenDemo={handleOpenDemo}
           onOrderThisWebsite={handleOrderThisWebsite}
@@ -168,16 +173,16 @@ export function App() {
           }}
         />
 
-        {/* 9. Pricing Packages (STARTER ₹2,999, GROWTH ₹5,999, PROFESSIONAL ₹9,999+ with 3D Tilt) */}
+        {/* 8. Why Nexora: Bento Grid Layout */}
+        <WhyChooseUs />
+
+        {/* 9. Pricing Preview (STARTER ₹2,999, GROWTH ₹5,999, PROFESSIONAL ₹9,999+) */}
         <Pricing 
           onSelectPlan={handleSelectPlan}
           onOpenConsultation={() => setIsConsultationOpen(true)}
         />
 
-        {/* 10. Why Choose Nexora (8 Points) */}
-        <WhyChooseUs />
-
-        {/* 11. How We Work (5-Step Process) */}
+        {/* Working Process (5-Step Timeline) */}
         <HowWeWork />
 
         {/* What You Can Expect From Nexora (Transparent Trust & Quality Pillars) */}
@@ -188,10 +193,18 @@ export function App() {
           }}
         />
 
-        {/* 12. About Nexora (Honest Mission & Vision) */}
+        {/* About Nexora */}
         <About />
 
-        {/* 13. Contact & Lead Generation Section with 3D Budget Tiles */}
+        {/* 10. Final Call to Action */}
+        <FinalCTA 
+          onStartProject={() => {
+            const contactEl = document.getElementById('contact');
+            if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
+          }}
+        />
+
+        {/* Contact & Lead Generation Section with 3D Budget Tiles */}
         <ContactSection 
           initialService={targetService}
           initialIndustry={targetIndustry}

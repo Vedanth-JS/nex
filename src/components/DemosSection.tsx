@@ -114,16 +114,16 @@ export const DemosSection: React.FC<DemosSectionProps> = ({ onOpenDemo, onOrderT
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 text-xs font-semibold mb-4 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
             <Laptop className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Interactive Working Prototypes</span>
+            <span>Interactive Working Demonstrations</span>
           </div>
           <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-            Test Real Working Websites <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400">
-              Not Just Static Screenshots
+            See What Your Business <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-300">
+              Could Look Like Online.
             </span>
           </h2>
           <p className="text-slate-300 text-base sm:text-lg mt-4 leading-relaxed">
-            Every demo below is a fully functional web experience. Click <strong>"View Live Demo"</strong> to test menus, booking forms, WhatsApp workflows, and switch between Desktop, Tablet, and Mobile views.
+            Every demo below is a fully functional web experience created by our design team. Click <strong>"View Live Demo"</strong> to test live menus, booking forms, WhatsApp workflows, and switch device viewports.
           </p>
         </div>
 

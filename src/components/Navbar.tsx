@@ -17,13 +17,12 @@ export const Navbar: React.FC<NavbarProps> = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
-  // Exact 8 clean nav links per prompt specifications
+  // Exact clean center nav links per Section 2 specification
   const navLinks = [
     { name: 'Home', href: '#home', id: 'home' },
     { name: 'Services', href: '#services', id: 'services' },
     { name: 'Industries', href: '#industries', id: 'industries' },
     { name: 'Our Work', href: '#portfolio', id: 'portfolio' },
-    { name: 'Live Demos', href: '#demos', id: 'demos', isLive: true },
     { name: 'Pricing', href: '#pricing', id: 'pricing' },
     { name: 'About', href: '#about', id: 'about' },
     { name: 'Contact', href: '#contact', id: 'contact' },
@@ -110,9 +109,6 @@ export const Navbar: React.FC<NavbarProps> = () => {
                       : 'text-slate-300 hover:text-white hover:bg-white/5 font-medium'
                   }`}
                 >
-                  {link.isLive && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                  )}
                   <span>{link.name}</span>
                 </a>
               );
@@ -182,12 +178,7 @@ export const Navbar: React.FC<NavbarProps> = () => {
                       : 'text-slate-200 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  <span className="flex items-center gap-2">
-                    {link.isLive && (
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    )}
-                    <span>{link.name}</span>
-                  </span>
+                  <span>{link.name}</span>
                 </a>
               );
             })}
