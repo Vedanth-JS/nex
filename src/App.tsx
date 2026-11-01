@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ScrollShowcase3D } from './components/3d/ScrollShowcase3D';
+import { BusinessProblem } from './components/BusinessProblem';
 import { Services } from './components/Services';
+import { ServiceDetailModal } from './components/ServiceDetailModal';
 import { Industries } from './components/Industries';
 import { DemosSection } from './components/DemosSection';
 import { Portfolio } from './components/Portfolio';
 import { Pricing } from './components/Pricing';
 import { WhyChooseUs } from './components/WhyChooseUs';
 import { HowWeWork } from './components/HowWeWork';
+import { ExpectationsSection } from './components/ExpectationsSection';
 import { About } from './components/About';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
@@ -21,6 +24,8 @@ export function App() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [activeDemoId, setActiveDemoId] = useState<DemoId>('restaurant');
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
+  const [selectedDetailServiceId, setSelectedDetailServiceId] = useState<string | null>(null);
+  const [isServiceDetailOpen, setIsServiceDetailOpen] = useState(false);
   
   // State to prepopulate contact form when user clicks specific service/plan/demo
   const [targetService, setTargetService] = useState<string>('Business Website');
@@ -30,6 +35,11 @@ export function App() {
   const handleOpenDemo = (demoId: DemoId) => {
     setActiveDemoId(demoId);
     setIsDemoModalOpen(true);
+  };
+
+  const handleOpenServiceDetail = (serviceId: string) => {
+    setSelectedDetailServiceId(serviceId);
+    setIsServiceDetailOpen(true);
   };
 
   // When user is viewing a demo or clicking order on a demo card, scroll to contact and prefill
@@ -122,10 +132,18 @@ export function App() {
           />
         </div>
 
+        {/* Business Problem Section: "Your Customers Are Online. Is Your Business?" */}
+        <BusinessProblem 
+          onBuildWebsite={() => {
+            const contactEl = document.getElementById('contact');
+            if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
+          }} 
+        />
+
         {/* 5. Services Section with 3D Tilt Cards */}
         <Services 
-          onOpenDemo={handleOpenDemo}
           onSelectService={handleSelectService}
+          onOpenServiceDetail={handleOpenServiceDetail}
         />
 
         {/* 6. Industries We Serve (12 Industries Interactive Grid with 3D Tilt) */}
@@ -150,7 +168,7 @@ export function App() {
           }}
         />
 
-        {/* 9. Pricing Packages (₹2,999, ₹5,999, ₹9,999 onwards with 3D Tilt) */}
+        {/* 9. Pricing Packages (STARTER ₹2,999, GROWTH ₹5,999, PROFESSIONAL ₹9,999+ with 3D Tilt) */}
         <Pricing 
           onSelectPlan={handleSelectPlan}
           onOpenConsultation={() => setIsConsultationOpen(true)}
@@ -161,6 +179,14 @@ export function App() {
 
         {/* 11. How We Work (5-Step Process) */}
         <HowWeWork />
+
+        {/* What You Can Expect From Nexora (Transparent Trust & Quality Pillars) */}
+        <ExpectationsSection 
+          onStartProject={() => {
+            const contactEl = document.getElementById('contact');
+            if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
+          }}
+        />
 
         {/* 12. About Nexora (Honest Mission & Vision) */}
         <About />
@@ -191,6 +217,15 @@ export function App() {
       <ConsultationModal 
         isOpen={isConsultationOpen}
         onClose={() => setIsConsultationOpen(false)}
+      />
+
+      {/* Service Detail Modal */}
+      <ServiceDetailModal
+        isOpen={isServiceDetailOpen}
+        serviceId={selectedDetailServiceId}
+        onClose={() => setIsServiceDetailOpen(false)}
+        onGetQuote={handleSelectService}
+        onViewDemo={handleOpenDemo}
       />
     </div>
   );

@@ -5,7 +5,7 @@ import {
   Mail, 
   Phone, 
   MapPin, 
-  Globe
+  Sparkles
 } from 'lucide-react';
 import { getWhatsAppUrl, WHATSAPP_CONFIG } from '../utils/whatsapp';
 
@@ -15,6 +15,12 @@ const InstagramIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4'
     <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
+
+const FacebookIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
   </svg>
 );
 
@@ -38,31 +44,29 @@ export const Footer: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const quickLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'Services', href: '#services' },
+  const companyLinks = [
+    { name: 'About Us', href: '#about' },
+    { name: 'Our Services', href: '#services' },
     { name: 'Industries', href: '#industries' },
     { name: 'Our Work', href: '#portfolio' },
-    { name: 'Live Demos', href: '#demos' },
-    { name: 'Pricing', href: '#pricing' },
-    { name: 'About', href: '#about' },
     { name: 'Contact', href: '#contact' },
   ];
 
   const serviceLinks = [
-    'Business Websites',
-    'Restaurant Websites',
-    'Clinic Websites',
-    'E-commerce Websites',
-    'Hotel Websites',
-    'Website Maintenance',
+    { name: 'Business Websites', href: '#services' },
+    { name: 'Restaurant Websites', href: '#services' },
+    { name: 'Clinic Websites', href: '#services' },
+    { name: 'E-commerce Websites', href: '#services' },
+    { name: 'Hotel Websites', href: '#services' },
+    { name: 'Website Maintenance', href: '#services' },
   ];
 
-  const socialLinks = [
-    { name: 'WhatsApp', href: getWhatsAppUrl(WHATSAPP_CONFIG.defaultHeroMessage), icon: MessageCircle, color: 'hover:text-emerald-400' },
-    { name: 'LinkedIn', href: 'https://linkedin.com', icon: LinkedinIcon, color: 'hover:text-blue-400' },
+  const connectLinks = [
     { name: 'Instagram', href: 'https://instagram.com', icon: InstagramIcon, color: 'hover:text-pink-400' },
-    { name: 'GitHub', href: 'https://github.com', icon: GithubIcon, color: 'hover:text-purple-400' },
+    { name: 'Facebook', href: 'https://facebook.com', icon: FacebookIcon, color: 'hover:text-blue-500' },
+    { name: 'LinkedIn', href: 'https://linkedin.com', icon: LinkedinIcon, color: 'hover:text-blue-400' },
+    { name: 'GitHub', href: 'https://github.com/Vedanth-JS/nex', icon: GithubIcon, color: 'hover:text-purple-400' },
+    { name: 'WhatsApp', href: getWhatsAppUrl(WHATSAPP_CONFIG.defaultHeroMessage), icon: MessageCircle, color: 'hover:text-emerald-400' },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -75,13 +79,13 @@ export const Footer: React.FC = () => {
     <footer className="bg-[#030308] border-t border-white/10 pt-16 pb-12 px-4 sm:px-6 lg:px-8 text-slate-400 text-xs relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
         
-        {/* Top Grid */}
+        {/* Top Multi-column Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
           
-          {/* Brand Info (2 cols) */}
+          {/* Brand Column (NEXORA TECHNOLOGIES / Building Digital Experiences) */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#8B5CF6] via-[#2563EB] to-[#22D3EE] p-[1.5px] shadow-lg shadow-purple-500/20">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#8B5CF6] via-[#2563EB] to-[#22D3EE] p-[1.5px] shadow-lg shadow-purple-500/20">
                 <div className="w-full h-full bg-[#050510] rounded-[10px] flex items-center justify-center font-display font-black text-lg text-white">
                   N
                 </div>
@@ -97,35 +101,32 @@ export const Footer: React.FC = () => {
             </div>
 
             <p className="text-slate-300 text-xs leading-relaxed max-w-sm pt-2">
-              We design and develop modern, affordable, high-converting websites for local businesses, shops, clinics, restaurants, and educational institutions.
+              Professional website development agency specializing in modern, high-performance, and conversion-focused websites for local businesses and entrepreneurs.
             </p>
 
-            <div className="flex items-center gap-3 pt-2">
-              {socialLinks.map((s) => {
-                const Icon = s.icon;
-                return (
-                  <a
-                    key={s.name}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={s.name}
-                    className={`w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 ${s.color} hover:bg-white/10 transition-all`}
-                  >
-                    <Icon className="w-4 h-4" />
-                  </a>
-                );
-              })}
+            <div className="pt-2 text-slate-400 space-y-2">
+              <p className="flex items-center gap-2 text-xs">
+                <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span className="text-slate-300 font-medium">{WHATSAPP_CONFIG.agencyPhoneFormatted}</span>
+              </p>
+              <p className="flex items-center gap-2 text-xs">
+                <Mail className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                <span className="text-slate-300">{WHATSAPP_CONFIG.agencyEmail}</span>
+              </p>
+              <p className="flex items-center gap-2 text-xs">
+                <MapPin className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                <span>Karnataka, India</span>
+              </p>
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Company Column */}
           <div>
             <h4 className="font-display text-xs font-bold uppercase tracking-wider text-white mb-4">
-              Quick Links
+              Company
             </h4>
             <ul className="space-y-2.5">
-              {quickLinks.map((item) => (
+              {companyLinks.map((item) => (
                 <li key={item.name}>
                   <a
                     href={item.href}
@@ -139,55 +140,57 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Services Column */}
           <div>
             <h4 className="font-display text-xs font-bold uppercase tracking-wider text-white mb-4">
               Services
             </h4>
             <ul className="space-y-2.5">
               {serviceLinks.map((item) => (
-                <li key={item}>
+                <li key={item.name}>
                   <a
-                    href="#contact"
-                    onClick={(e) => handleNavClick(e, '#contact')}
+                    href={item.href}
+                    onClick={(e) => handleNavClick(e, item.href)}
                     className="hover:text-cyan-400 transition-colors"
                   >
-                    {item}
+                    {item.name}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Details */}
+          {/* Connect Column */}
           <div>
             <h4 className="font-display text-xs font-bold uppercase tracking-wider text-white mb-4">
-              Connect With Us
+              Connect
             </h4>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-2">
-                <Phone className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>{WHATSAPP_CONFIG.agencyPhoneFormatted}</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Mail className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
-                <span className="break-all">{WHATSAPP_CONFIG.agencyEmail}</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-                <span>Karnataka, India</span>
-              </li>
+            <ul className="space-y-2.5 mb-6">
+              {connectLinks.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <li key={item.name}>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-2.5 text-slate-300 ${item.color} transition-colors group`}
+                    >
+                      <Icon className="w-4 h-4 text-slate-400 group-hover:scale-110 transition-transform" />
+                      <span>{item.name}</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
 
-            <div className="mt-5">
-              <button
-                onClick={scrollToTop}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors text-[11px]"
-              >
-                <ArrowUp className="w-3.5 h-3.5" />
-                <span>Back to Top</span>
-              </button>
-            </div>
+            <button
+              onClick={scrollToTop}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors text-[11px]"
+            >
+              <ArrowUp className="w-3.5 h-3.5" />
+              <span>Back to Top</span>
+            </button>
           </div>
 
         </div>
@@ -195,8 +198,8 @@ export const Footer: React.FC = () => {
         {/* Bottom Copyright */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-[11px]">
           <p>© 2026 Nexora Technologies. All Rights Reserved.</p>
-          <p className="flex items-center gap-1">
-            <span>Engineered with passion for local business success</span>
+          <p className="flex items-center gap-1 text-slate-400">
+            <span>Building Digital Experiences for Growing Businesses</span>
           </p>
         </div>
 

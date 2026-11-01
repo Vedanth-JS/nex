@@ -157,21 +157,31 @@ export const Pricing: React.FC<PricingProps> = ({ onSelectPlan, onOpenConsultati
           </div>
         </div>
 
-        {/* Free Consultation Banner with 3D Glass Aura */}
+        {/* Custom Requirements Banner */}
         <div className="glass-card-3d rounded-3xl p-8 sm:p-10 border border-purple-500/40 bg-gradient-to-r from-purple-950/40 via-[#0B1020] to-cyan-950/40 text-center max-w-3xl mx-auto shadow-[0_20px_50px_rgba(139,92,246,0.2)]">
           <h3 className="font-display text-2xl sm:text-3xl font-bold text-white mb-3">
-            Not sure which package is right for your business?
+            Need something customized? Let's discuss your requirements.
           </h3>
           <p className="text-slate-300 text-xs sm:text-sm leading-relaxed mb-6 max-w-xl mx-auto">
-            Book a quick 10-minute zero-pressure call. We’ll evaluate your business niche, suggest the best structure, and offer an honest estimate.
+            Have specialized booking rules, e-commerce catalog requirements, or specific design preferences? We engineer custom solutions tailored to your unique operational flow.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <button
-              onClick={onOpenConsultation}
-              className="px-8 py-4 rounded-xl gradient-button text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-xl shadow-purple-600/40"
+              onClick={() => {
+                const contactEl = document.getElementById('contact');
+                if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="px-8 py-4 rounded-xl gradient-button text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-xl shadow-purple-600/40 hover:scale-105 active:scale-95 transition-all cursor-pointer"
             >
-              <PhoneCall className="w-4 h-4" />
-              <span>Get a Free Consultation</span>
+              <span>GET A FREE QUOTE</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+            <button
+              onClick={onOpenConsultation}
+              className="px-6 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 border border-white/10 transition-all cursor-pointer"
+            >
+              <PhoneCall className="w-4 h-4 text-cyan-400" />
+              <span>Book 10-Min Call</span>
             </button>
           </div>
         </div>

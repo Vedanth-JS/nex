@@ -145,14 +145,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
           </div>
           {/* Exact Heading from prompt */}
           <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-            Let's Build Your <br />
+            Let's Build Something <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-300">
-              Business Website.
+              Amazing for Your Business.
             </span>
           </h2>
           {/* Exact Description from prompt */}
           <p className="text-slate-300 text-base sm:text-lg mt-4 leading-relaxed">
-            Tell us about your business. We'll help you find the right website solution.
+            Tell us about your business and the website you need. We'll help you choose the right solution.
           </p>
         </div>
 
@@ -431,15 +431,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                     </div>
                   </div>
 
-                  {/* Project Description */}
+                  {/* Project Requirements */}
                   <div>
                     <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                      Project Description & Requirements
+                      Project Requirements
                     </label>
                     <textarea
                       name="projectDescription"
                       rows={3}
-                      placeholder="Tell us about the features you need (e.g. food menu, appointment form, online payments, delivery radius, etc.)"
+                      placeholder="Tell us about the features you need (e.g. food menu, appointment booking, online payments, gallery, etc.)"
                       value={formData.projectDescription}
                       onChange={handleChange}
                       className="w-full bg-[#050814] border border-white/15 focus:border-purple-500 rounded-xl p-3.5 text-xs text-white placeholder:text-slate-500 focus:outline-none transition-colors resize-none shadow-inner"
@@ -456,12 +456,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       {loading ? (
                         <>
                           <Loader2 className="w-4 h-4 animate-spin" />
-                          <span>Submitting...</span>
+                          <span>SENDING...</span>
                         </>
                       ) : (
                         <>
                           <Send className="w-4 h-4" />
-                          <span>Submit Enquiry</span>
+                          <span>SEND MY ENQUIRY</span>
                         </>
                       )}
                     </button>
@@ -472,7 +472,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       className="py-4 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/20 transition-all cursor-pointer"
                     >
                       <MessageCircle className="w-4 h-4 text-emerald-400" />
-                      <span>Chat on WhatsApp</span>
+                      <span>CHAT ON WHATSAPP</span>
                     </button>
                   </div>
                 </form>

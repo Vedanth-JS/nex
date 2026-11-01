@@ -50,7 +50,7 @@ export const Industries: React.FC<IndustriesProps> = ({ onOpenDemo, onSelectIndu
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-4 shadow-[0_0_20px_rgba(34,211,238,0.25)]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-4 shadow-[0_0_20px_rgba(34,211,238,0.2)]">
             <Compass className="w-3.5 h-3.5 text-cyan-400" />
             <span>Tailored for 12+ Diverse Business Niches</span>
           </div>
@@ -65,67 +65,84 @@ export const Industries: React.FC<IndustriesProps> = ({ onOpenDemo, onSelectIndu
           </p>
         </div>
 
-        {/* 12 Industries Grid with 3D Tilt */}
+        {/* 12 Industries Grid with Photography & 3D Tilt */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {INDUSTRIES_DATA.map((ind) => {
             const Icon = INDUSTRY_ICONS[ind.icon] || Sparkles;
             return (
-              <Card3D key={ind.id} intensity={14} glareOpacity={0.18}>
+              <Card3D key={ind.id} intensity={12} glareOpacity={0.16}>
                 <div
-                  className="glass-card-3d rounded-2xl p-6 border border-white/10 hover:border-cyan-500/40 transition-all duration-300 flex flex-col justify-between group h-full bg-[#0a0f20]/90 relative overflow-hidden"
+                  className="glass-card-3d rounded-2xl overflow-hidden border border-white/10 hover:border-cyan-500/40 transition-all duration-300 flex flex-col justify-between group h-full bg-[#0a0f20]/95 relative"
                 >
-                  <div style={{ transform: 'translateZ(15px)' }}>
-                    {/* Top Bar */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/15 flex items-center justify-center text-cyan-400 group-hover:bg-gradient-to-tr group-hover:from-cyan-500 group-hover:to-blue-600 group-hover:text-white transition-all shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
-                        <Icon className="w-5 h-5" />
+                  {/* High Quality Photography Header with Miniature Web Preview */}
+                  <div className="relative h-44 overflow-hidden bg-black/60">
+                    <img 
+                      src={ind.image} 
+                      alt={ind.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 brightness-[0.7]" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f20] via-[#0a0f20]/30 to-transparent" />
+                    
+                    {/* Top Icon & Tag */}
+                    <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                      <div className="w-9 h-9 rounded-xl bg-black/70 backdrop-blur-md border border-white/15 flex items-center justify-center text-cyan-400 shadow-md">
+                        <Icon className="w-4 h-4" />
                       </div>
                       {ind.demoId && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 backdrop-blur-md">
                           Live Demo
                         </span>
                       )}
                     </div>
 
-                    <h3 className="font-display text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
-                      {ind.name}
-                    </h3>
-                    <p className="text-xs text-purple-300 font-medium mt-0.5 mb-2.5">
-                      {ind.tagline}
-                    </p>
-                    <p className="text-slate-400 text-xs leading-relaxed mb-4">
-                      {ind.description}
-                    </p>
-
-                    {/* Key Features Pill list */}
-                    <div className="space-y-1.5 mb-6 pt-3 border-t border-white/10">
-                      {ind.features.map((f, i) => (
-                        <div key={i} className="flex items-center gap-2 text-[11px] text-slate-300">
-                          <Check className="w-3 h-3 text-cyan-400 shrink-0" />
-                          <span>{f}</span>
-                        </div>
-                      ))}
+                    <div className="absolute bottom-2.5 left-3 right-3">
+                      <h3 className="font-display text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                        {ind.name}
+                      </h3>
                     </div>
                   </div>
 
-                  {/* Bottom Actions with 3D Popout */}
-                  <div style={{ transform: 'translateZ(25px)' }} className="pt-3 border-t border-white/10 flex items-center gap-2 mt-auto">
-                    {ind.demoId ? (
+                  {/* Body Content */}
+                  <div className="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                      <p className="text-xs text-purple-300 font-medium mb-2">
+                        {ind.tagline}
+                      </p>
+                      <p className="text-slate-400 text-xs leading-relaxed mb-4">
+                        {ind.description}
+                      </p>
+
+                      {/* Key Features Pill list */}
+                      <div className="space-y-1.5 mb-5 pt-3 border-t border-white/10">
+                        {ind.features.map((f, i) => (
+                          <div key={i} className="flex items-center gap-2 text-[11px] text-slate-300">
+                            <Check className="w-3 h-3 text-cyan-400 shrink-0" />
+                            <span>{f}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Bottom Actions with exact CTA from requirements */}
+                    <div className="pt-3 border-t border-white/10 flex flex-col gap-2 mt-auto">
+                      {ind.demoId && (
+                        <button
+                          onClick={() => onOpenDemo(ind.demoId!)}
+                          className="w-full py-2 rounded-xl bg-white/5 hover:bg-white/15 text-slate-200 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 border border-white/10 transition-colors cursor-pointer"
+                        >
+                          <Eye className="w-3.5 h-3.5 text-cyan-400" />
+                          <span>View Live Demo</span>
+                        </button>
+                      )}
                       <button
-                        onClick={() => onOpenDemo(ind.demoId!)}
-                        className="flex-1 py-2 rounded-xl bg-white/5 hover:bg-white/15 text-slate-200 hover:text-white text-xs font-semibold flex items-center justify-center gap-1 border border-white/10 transition-colors"
+                        onClick={() => onSelectIndustry(ind.name)}
+                        className="w-full py-2.5 rounded-xl gradient-button text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
                       >
-                        <Eye className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>Preview</span>
+                        <span>GET A WEBSITE FOR YOUR BUSINESS</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </button>
-                    ) : null}
-                    <button
-                      onClick={() => onSelectIndustry(ind.name)}
-                      className="flex-1 py-2 rounded-xl gradient-button text-white text-xs font-bold flex items-center justify-center gap-1 shadow-sm"
-                    >
-                      <span>Get Website</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                    </div>
+
                   </div>
 
                 </div>

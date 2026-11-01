@@ -8,23 +8,22 @@ import {
   GraduationCap, 
   CheckCircle2, 
   ArrowRight, 
-  Sparkles,
-  RefreshCw,
-  ShieldCheck,
-  Globe,
-  Server,
-  Search,
-  MapPin,
-  MessageCircle,
-  Eye
+  Sparkles, 
+  RefreshCw, 
+  ShieldCheck, 
+  Globe, 
+  Server, 
+  Search, 
+  MapPin, 
+  MessageCircle, 
+  Info 
 } from 'lucide-react';
 import { MAIN_SERVICES, ADDITIONAL_SERVICES } from '../data/servicesData';
 import { Card3D } from './3d/Card3D';
-import { DemoId } from '../types';
 
 interface ServicesProps {
-  onOpenDemo: (id: DemoId) => void;
   onSelectService: (serviceName: string) => void;
+  onOpenServiceDetail: (serviceId: string) => void;
 }
 
 const SERVICE_ICONS: Record<string, React.ElementType> = {
@@ -46,9 +45,12 @@ const ADDITIONAL_ICONS: Record<string, React.ElementType> = {
   MessageCircle,
 };
 
-export const Services: React.FC<ServicesProps> = ({ onOpenDemo, onSelectService }) => {
+export const Services: React.FC<ServicesProps> = ({ 
+  onSelectService, 
+  onOpenServiceDetail 
+}) => {
   return (
-    <section id="services" className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <section id="services" className="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-[#050510]">
       {/* Background Ambience */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-purple-600/10 rounded-full blur-[140px] pointer-events-none -z-10" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none -z-10" />
@@ -57,37 +59,37 @@ export const Services: React.FC<ServicesProps> = ({ onOpenDemo, onSelectService 
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-950/60 border border-purple-500/30 text-purple-300 text-xs font-semibold mb-4 shadow-[0_0_20px_rgba(139,92,246,0.3)]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-950/60 border border-purple-500/30 text-purple-300 text-xs font-semibold mb-4 shadow-[0_0_20px_rgba(139,92,246,0.25)]">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Niche-Tailored Web Architecture</span>
+            <span>High-Impact Web Solutions</span>
           </div>
           <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-            Comprehensive Web Development <br />
+            Specialized Website Services <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-300">
-              Built Specifically for Your Industry
+              Engineered for Your Business Model
             </span>
           </h2>
           <p className="text-slate-300 text-base sm:text-lg mt-4 leading-relaxed">
-            We don’t believe in generic one-size-fits-all templates. Every website is engineered around your customers’ buying habits, booking patterns, and WhatsApp behaviors.
+            Every business has distinct customer conversion pathways. We engineer websites tailored around your booking requirements, menu displays, product catalogs, and WhatsApp inquiries.
           </p>
         </div>
 
-        {/* 6 Primary Services Grid with 3D Card Tilt */}
+        {/* 6 Primary Services Grid with 3D Tilt */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
           {MAIN_SERVICES.map((srv) => {
             const Icon = SERVICE_ICONS[srv.id] || Building;
             return (
-              <Card3D key={srv.id} intensity={12} glareOpacity={0.16}>
+              <Card3D key={srv.id} intensity={10} glareOpacity={0.16}>
                 <div
                   className="glass-card-3d rounded-3xl p-8 border border-white/10 hover:border-purple-500/50 transition-all duration-300 flex flex-col justify-between group h-full relative overflow-hidden bg-[#090d1e]/90"
                 >
                   {/* Background Corner Glow */}
-                  <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-br ${srv.gradient} rounded-bl-full pointer-events-none transition-all group-hover:scale-150 group-hover:opacity-100 opacity-60`} />
+                  <div className={`absolute top-0 right-0 w-40 h-40 bg-gradient-to-br ${srv.gradient} rounded-bl-full pointer-events-none transition-all group-hover:scale-150 group-hover:opacity-100 opacity-50`} />
 
                   <div style={{ transform: 'translateZ(20px)' }}>
                     {/* Top Bar with Number & Badge */}
                     <div className="flex items-center justify-between mb-6">
-                      <div className="w-13 h-13 p-3 rounded-2xl bg-white/5 border border-white/15 flex items-center justify-center text-purple-400 group-hover:bg-gradient-to-tr group-hover:from-purple-600 group-hover:to-cyan-500 group-hover:text-white transition-all shadow-[0_5px_15px_rgba(0,0,0,0.4)]">
+                      <div className="w-13 h-13 p-3.5 rounded-2xl bg-white/5 border border-white/15 flex items-center justify-center text-purple-400 group-hover:bg-gradient-to-tr group-hover:from-purple-600 group-hover:to-cyan-500 group-hover:text-white transition-all shadow-md">
                         <Icon className="w-6 h-6" />
                       </div>
                       <div className="flex items-center gap-2">
@@ -119,22 +121,21 @@ export const Services: React.FC<ServicesProps> = ({ onOpenDemo, onSelectService 
                     </ul>
                   </div>
 
-                  {/* Card Actions */}
-                  <div style={{ transform: 'translateZ(30px)' }} className="flex items-center gap-2 pt-4 border-t border-white/10 mt-auto">
-                    {srv.demoId && (
-                      <button
-                        onClick={() => onOpenDemo(srv.demoId as DemoId)}
-                        className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/15 text-slate-200 hover:text-white text-xs font-semibold flex items-center justify-center gap-1.5 border border-white/10 transition-colors"
-                      >
-                        <Eye className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>View Demo</span>
-                      </button>
-                    )}
+                  {/* Card Actions: Learn More & Get a Quote per requirements */}
+                  <div style={{ transform: 'translateZ(30px)' }} className="grid grid-cols-2 gap-2.5 pt-4 border-t border-white/10 mt-auto">
+                    <button
+                      onClick={() => onOpenServiceDetail(srv.id)}
+                      className="py-3 rounded-xl bg-white/5 hover:bg-white/15 text-slate-200 hover:text-white text-xs font-bold flex items-center justify-center gap-1.5 border border-white/10 transition-colors cursor-pointer"
+                    >
+                      <Info className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>Learn More</span>
+                    </button>
+
                     <button
                       onClick={() => onSelectService(srv.title)}
-                      className="flex-1 py-2.5 rounded-xl gradient-button text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-md shadow-purple-600/30"
+                      className="py-3 rounded-xl gradient-button text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-md shadow-purple-600/30 cursor-pointer"
                     >
-                      <span>Get Quote</span>
+                      <span>Get a Quote</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -145,7 +146,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenDemo, onSelectService 
           })}
         </div>
 
-        {/* Additional Services Bar with 3D Depth */}
+        {/* Additional Services Bar */}
         <div className="glass-card-3d rounded-3xl p-8 sm:p-10 border border-white/10 bg-[#090e20]/90">
           <div className="max-w-2xl mb-8">
             <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">Complete Digital Ecosystem</span>
