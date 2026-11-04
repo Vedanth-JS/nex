@@ -15,7 +15,7 @@ export interface LeadPayload {
 
 export const LEAD_CONFIG = {
   // Web3Forms: Free form-to-email service (delivers directly to agencyEmail)
-  web3FormsKey: (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined) || '',
+  web3FormsKey: (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined) || 'cb611cdb-c534-49e2-825a-45b09416c466',
   
   // Google Sheets Apps Script Webhook URL
   googleSheetsUrl: (import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL as string | undefined) || 
