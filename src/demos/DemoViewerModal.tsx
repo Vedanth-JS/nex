@@ -240,13 +240,13 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
     }
   };
 
-  // Device frame width classes
+  // Device frame width classes - on mobile (< md), always 100% full-screen edge-to-edge
   const frameClass =
     deviceView === 'desktop'
-      ? 'w-full h-full rounded-2xl overflow-y-auto border border-white/10 shadow-[0_20px_70px_rgba(0,0,0,0.8)]'
+      ? 'w-full h-full md:rounded-2xl overflow-y-auto md:border md:border-white/10 md:shadow-[0_20px_70px_rgba(0,0,0,0.8)]'
       : deviceView === 'tablet'
-      ? 'w-[768px] max-w-full my-4 rounded-3xl overflow-y-auto border-[6px] border-slate-700/80 shadow-[0_0_70px_rgba(0,0,0,0.9)] max-h-[88vh]'
-      : 'w-[390px] max-w-full my-4 overflow-y-auto shadow-[0_0_70px_rgba(0,0,0,0.9)] max-h-[88vh]';
+      ? 'w-full md:w-[768px] max-w-full md:my-4 md:rounded-3xl overflow-y-auto md:border-[6px] md:border-slate-700/80 md:shadow-[0_0_70px_rgba(0,0,0,0.9)] h-full md:max-h-[88vh]'
+      : 'w-full md:w-[390px] max-w-full md:my-4 md:rounded-3xl overflow-y-auto md:shadow-[0_0_70px_rgba(0,0,0,0.9)] h-full md:max-h-[88vh]';
 
   return (
     <div
@@ -254,13 +254,12 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
       aria-modal="true"
       aria-label={`Demo: ${activeDemo.name}`}
       ref={trapRef}
-      className="fixed inset-0 z-50 flex flex-col bg-[#07070D]/98 backdrop-blur-3xl"
+      className="fixed inset-0 z-50 flex flex-col bg-[#07070D]/98 backdrop-blur-3xl h-[100dvh] max-h-[100dvh] w-full overflow-hidden overscroll-contain pt-[env(safe-area-inset-top)] md:pt-0"
     >
       {/* ============================================================ */}
+      {/* TOP CONTROL BAR: Slim 52px high, uniform across phone view   */}
       {/* ============================================================ */}
-      {/* TOP CONTROL BAR: Simple, Advanced & Conflict-Free Top Bar    */}
-      {/* ============================================================ */}
-      <header className="relative bg-[#090A14]/95 backdrop-blur-2xl border-b border-white/[0.08] px-2.5 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-3 shrink-0 text-white z-30 shadow-[0_4px_30px_rgba(0,0,0,0.7)] select-none">
+      <header className="relative h-[52px] min-h-[52px] max-h-[52px] bg-[#090A14]/95 backdrop-blur-2xl border-b border-white/[0.08] px-2.5 sm:px-4 flex items-center justify-between gap-1.5 sm:gap-3 shrink-0 text-white z-30 shadow-[0_4px_30px_rgba(0,0,0,0.7)] select-none">
         
         {/* Luminous Top Accent Line */}
         <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-amber-400/30 via-violet-500/30 to-transparent pointer-events-none" />
@@ -268,18 +267,18 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
         {/* ========================================================== */}
         {/* LEFT / NAVIGATION ZONE: Brand + Demo Switcher (Desktop & Mobile) */}
         {/* ========================================================== */}
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
           
           {/* Studio Brand Mark */}
-          <div className="flex items-center gap-2 pr-2 sm:pr-3 border-r border-white/10 shrink-0">
-            <div className="w-5 h-5 rounded-lg bg-white/5 border border-white/10 p-0.5 flex items-center justify-center shrink-0 shadow-sm">
+          <div className="flex items-center gap-1.5 sm:gap-2 pr-1.5 sm:pr-3 border-r border-white/10 shrink-0">
+            <div className="w-7 h-7 sm:w-6 sm:h-6 rounded-lg bg-white/5 border border-white/10 p-1 flex items-center justify-center shrink-0 shadow-sm">
               <img src="/logo.png" alt="Nexora Logo" className="w-full h-full object-contain" />
             </div>
-            <span className="relative flex h-1.5 w-1.5">
+            <span className="relative hidden xs:flex h-1.5 w-1.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
             </span>
-            <div className="flex items-baseline gap-1">
+            <div className="hidden sm:flex items-baseline gap-1">
               <span className="font-display font-extrabold text-xs tracking-wider text-white">NEXORA</span>
               <span className="text-[9px] font-mono tracking-widest text-amber-400 font-bold uppercase">STUDIO</span>
             </div>
@@ -291,20 +290,20 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
               onClick={() => { playStudioClick(); goPrev(); }}
               title="Previous Demo"
               aria-label="Previous demo"
-              className="p-1 rounded-lg text-slate-400 hover:text-white active:scale-95 transition-all shrink-0 cursor-pointer"
+              className="w-8 h-8 rounded-lg text-slate-300 hover:text-white active:scale-95 flex items-center justify-center transition-all shrink-0 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <div className="flex items-center gap-1.5 px-2 py-0.5 min-w-0">
+            <div className="flex items-center gap-1 px-1.5 py-0.5 min-w-0">
               <activeDemo.icon className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-              <span className="text-xs font-bold text-white truncate max-w-[105px]">{activeDemo.name}</span>
-              <span className="text-[10px] font-mono text-slate-400 shrink-0">({activeIdx + 1}/6)</span>
+              <span className="text-xs font-bold text-white truncate max-w-[85px]">{activeDemo.name}</span>
+              <span className="text-[11px] font-mono tabular-nums text-slate-400 shrink-0">({activeIdx + 1}/6)</span>
             </div>
             <button
               onClick={() => { playStudioClick(); goNext(); }}
               title="Next Demo"
               aria-label="Next demo"
-              className="p-1 rounded-lg text-slate-400 hover:text-white active:scale-95 transition-all shrink-0 cursor-pointer"
+              className="w-8 h-8 rounded-lg text-slate-300 hover:text-white active:scale-95 flex items-center justify-center transition-all shrink-0 cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -396,7 +395,7 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
         </div>
 
         {/* ========================================================== */}
-        {/* RIGHT ZONE: Specifications, WhatsApp & Star CTA          */}
+        {/* RIGHT ZONE: Specifications, WhatsApp & Order CTA           */}
         {/* ========================================================== */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           
@@ -431,26 +430,26 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
             <span className="hidden xl:inline">Chat</span>
           </a>
 
-          {/* Primary CTA: Order This Website */}
+          {/* Primary CTA: Order This Website - 40px high, min 44px tap target */}
           <button
             onClick={() => { playStudioClick(); onOrderThisWebsite(activeDemoId); }}
-            className="relative overflow-hidden group/order px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:brightness-110 text-slate-950 font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 sm:gap-2 shadow-[0_0_20px_rgba(251,191,36,0.35)] active:scale-[0.98] transition-all cursor-pointer"
+            className="relative overflow-hidden group/order h-10 min-h-[40px] px-3 sm:px-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:brightness-110 text-slate-950 font-extrabold text-xs uppercase tracking-wider flex items-center gap-1 sm:gap-2 shadow-[0_0_20px_rgba(251,191,36,0.35)] active:scale-[0.98] transition-all cursor-pointer whitespace-nowrap shrink-0"
           >
             {/* Shimmer sweep animation */}
             <span className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-12 -translate-x-full group-hover/order:animate-shimmer-sweep pointer-events-none" />
 
             <Sparkles className="w-3.5 h-3.5 text-slate-950 shrink-0" />
             <span className="hidden sm:inline">Order This Website</span>
-            <span className="sm:hidden">Order</span>
+            <span className="sm:hidden">ORDER</span>
             <ArrowRight className="w-3.5 h-3.5 text-slate-950 group-hover/order:translate-x-0.5 transition-transform shrink-0" />
           </button>
 
-          {/* Dismiss / Close Studio View */}
+          {/* Dismiss / Close Studio View - min 44px tap target */}
           <button
             onClick={onClose}
             title="Exit Demo Viewer (Esc)"
             aria-label="Exit demo viewer"
-            className="group/close p-1.5 sm:px-2.5 sm:py-2 rounded-xl bg-white/[0.04] hover:bg-rose-500/15 text-slate-300 hover:text-rose-200 border border-white/10 hover:border-rose-500/30 transition-all flex items-center gap-1.5 cursor-pointer"
+            className="group/close h-10 w-10 sm:w-auto sm:px-2.5 rounded-xl bg-white/[0.04] hover:bg-rose-500/15 text-slate-300 hover:text-rose-200 border border-white/10 hover:border-rose-500/30 transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
           >
             <X className="w-4 h-4 group-hover/close:rotate-90 transition-transform duration-200 text-slate-400 group-hover/close:text-rose-300" />
             <span className="text-xs font-semibold hidden sm:inline">Back</span>
@@ -521,12 +520,12 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
       {/* ============================================================ */}
       {/* DEMO VIEWPORT AREA                                           */}
       {/* ============================================================ */}
-      <div className="flex-1 overflow-auto bg-[#07070D] flex justify-center items-start p-2 sm:p-4">
-        <div className={`transition-all duration-300 bg-[#07070D] ${frameClass}`}>
+      <div className="flex-1 overflow-hidden md:overflow-auto bg-[#07070D] flex justify-center items-start p-0 md:p-4">
+        <div className={`w-full h-full md:h-auto overflow-y-auto overflow-x-hidden overscroll-contain transition-all duration-300 bg-[#07070D] ${frameClass}`}>
 
-          {/* Mobile phone frame: notch + bezel */}
+          {/* Mobile phone frame: notch + bezel - only on simulated desktop preview (>= md) */}
           {deviceView === 'mobile' && (
-            <>
+            <div className="hidden md:block">
               {/* Phone bezel top with notch */}
               <div className="bg-slate-800 rounded-t-[36px] px-4 pt-3 pb-2 flex items-center justify-center border-4 border-b-0 border-slate-700 sticky top-0 z-30">
                 <div className="w-24 h-5 bg-slate-950 rounded-full flex items-center justify-center gap-2">
@@ -548,12 +547,12 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
                 </div>
                 <div className="w-6" />
               </div>
-            </>
+            </div>
           )}
 
-          {/* Tablet simulated URL bar */}
+          {/* Tablet simulated URL bar - only on desktop simulator preview */}
           {deviceView === 'tablet' && (
-            <div className="bg-[#14162B] px-4 py-2 flex items-center justify-between border-b border-white/10 sticky top-0 z-30">
+            <div className="hidden md:flex bg-[#14162B] px-4 py-2 items-center justify-between border-b border-white/10 sticky top-0 z-30">
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
                 <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
@@ -568,7 +567,7 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
           )}
 
           {/* Demo active content */}
-          <div className="relative">
+          <div className="relative w-full overflow-x-hidden">
             <DemoStateProvider key={activeDemoId}>
               <Suspense fallback={<DemoSkeleton />}>
                 {renderActiveDemo()}
@@ -576,17 +575,17 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
             </DemoStateProvider>
           </div>
 
-          {/* Mobile bottom bezel */}
+          {/* Mobile bottom bezel - only on simulated desktop preview */}
           {deviceView === 'mobile' && (
-            <div className="bg-slate-800 rounded-b-[36px] px-4 pb-3 pt-2 flex items-center justify-center border-4 border-t-0 border-slate-700">
+            <div className="hidden md:flex bg-slate-800 rounded-b-[36px] px-4 pb-3 pt-2 items-center justify-center border-4 border-t-0 border-slate-700">
               <div className="w-28 h-1 bg-slate-600 rounded-full" />
             </div>
           )}
         </div>
       </div>
 
-      {/* Keyboard hint bar */}
-      <footer className="bg-[#090A15]/90 border-t border-white/5 px-4 py-1.5 flex items-center justify-between text-[10px] text-slate-400 font-mono shrink-0">
+      {/* Keyboard hint bar - hidden on phones (< md) to avoid duplicate bottom bars */}
+      <footer className="hidden md:flex bg-[#090A15]/90 border-t border-white/5 px-4 py-1.5 items-center justify-between text-[10px] text-slate-400 font-mono shrink-0">
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1">
             <kbd className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] text-slate-300">Esc</kbd> Exit

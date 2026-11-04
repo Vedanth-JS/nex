@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { 
   Sparkles, Star, MapPin, Calendar, ChevronLeft, ChevronRight, Check, X, 
-  CheckCircle2, Download, ArrowRight, SlidersHorizontal, Sparkle 
+  CheckCircle2, Download, ArrowRight, SlidersHorizontal, Sparkle, MessageCircle 
 } from 'lucide-react';
 import { 
   formatINR, calcNights, todayStr, addDays, generateICS, downloadICS, isValidPhone 
@@ -9,7 +9,8 @@ import {
 import { useToast } from './shared/hooks';
 import { useDemoState } from './shared/DemoStateContext';
 import { 
-  DemoBadge, ToastContainer, WhatsAppButton, SkeletonImage, DemoFormNote, FieldError, Stepper, AccordionItem 
+  DemoBadge, ToastContainer, WhatsAppButton, SkeletonImage, DemoFormNote, FieldError, Stepper, AccordionItem,
+  DemoMobileBottomBar
 } from './shared/components';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 
@@ -207,11 +208,14 @@ export const HotelDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackToMain
     : `Hello Royal Heritage Resort! I would like to inquire about room availability from ${checkIn} to ${checkOut} for ${guests} guests.`;
 
   return (
-    <div className="bg-[#0a0f1d] text-slate-100 font-sans min-h-screen selection:bg-amber-500 selection:text-slate-950">
+    <div className="bg-[#0a0f1d] text-slate-100 font-sans min-h-screen selection:bg-amber-500 selection:text-slate-950 pb-24 md:pb-0">
       <ToastContainer toasts={toasts} dismiss={dismissToast} />
 
-      {/* Top Demo Bar */}
-      <div className="bg-[#0e1628] border-b border-amber-500/20 px-4 sm:px-6 py-2 text-xs flex justify-between items-center text-amber-200/90">
+      {/* Branded Demo Concept Tag in Normal Flow at Top */}
+      <DemoBadge />
+
+      {/* Top Demo Bar (Desktop only) */}
+      <div className="hidden md:flex bg-[#0e1628] border-b border-amber-500/20 px-4 sm:px-6 py-2 text-xs justify-between items-center text-amber-200/90">
         <div className="flex items-center gap-2">
           <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
           <span className="truncate">Nexora Showcase: Ultra-Luxury Palace Resort & Live Reservation Engine</span>
@@ -224,14 +228,14 @@ export const HotelDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackToMain
 
       {/* Sticky Header: Nav + Availability Bar */}
       <header className="sticky top-0 z-40 bg-[#0a0f1d]/95 backdrop-blur-md border-b border-amber-500/20 shadow-2xl">
-        <nav className="px-4 sm:px-6 py-3.5 flex justify-between items-center max-w-7xl mx-auto">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full border border-amber-400/50 bg-gradient-to-br from-amber-400/20 to-transparent flex items-center justify-center text-amber-300 font-serif font-bold text-sm shadow-inner shadow-amber-400/20">
+        <nav className="px-4 sm:px-6 py-3 flex justify-between items-center max-w-7xl mx-auto">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-amber-400/50 bg-gradient-to-br from-amber-400/20 to-transparent flex items-center justify-center text-amber-300 font-serif font-bold text-xs sm:text-sm shadow-inner shadow-amber-400/20 shrink-0">
               RHR
             </div>
-            <div>
-              <span className="font-serif tracking-widest text-lg font-bold text-white uppercase block leading-none">Royal Heritage Resort</span>
-              <span className="text-[10px] tracking-widest uppercase text-amber-400/90 font-medium mt-0.5 block">Palace & Lakeview Sanctuary · Udaipur</span>
+            <div className="min-w-0">
+              <span className="font-serif tracking-wide sm:tracking-widest text-base sm:text-lg font-bold text-white uppercase block leading-none truncate">Royal Heritage Resort</span>
+              <span className="text-[10px] tracking-wide uppercase text-amber-400/90 font-medium mt-0.5 block truncate">Palace & Lakeview Sanctuary · Udaipur</span>
             </div>
           </div>
           <div className="hidden lg:flex items-center gap-7 text-xs uppercase tracking-widest text-slate-300">
@@ -239,15 +243,16 @@ export const HotelDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackToMain
             <a href="#attractions" className="hover:text-amber-400 transition-colors">Attractions</a>
             <a href="#faq" className="hover:text-amber-400 transition-colors">Guest FAQ</a>
           </div>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 shrink-0">
             <WhatsAppButton message="Hello Royal Heritage Resort! I would like to inquire about suite availability and royal packages." label="WhatsApp Concierge" size="sm" className="hidden sm:inline-flex" />
-            <a href="#suites" className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-md shadow-amber-500/20">Book Stay</a>
+            <a href="#suites" className="hidden sm:inline-flex px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-md shadow-amber-500/20">Book Stay</a>
           </div>
         </nav>
 
         {/* Sticky Availability Bar */}
-        <div className="border-t border-white/10 bg-[#0d1424]/90 px-4 sm:px-6 py-2.5 text-xs">
-          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+        <div className="border-t border-white/10 bg-[#0d1424]/95 px-4 sm:px-6 py-2.5 text-xs">
+          {/* Desktop view (>= md) */}
+          <div className="hidden md:flex max-w-7xl mx-auto flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <div className="flex items-center gap-2">
                 <Calendar className="w-3.5 h-3.5 text-amber-400 shrink-0" />
@@ -275,36 +280,98 @@ export const HotelDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackToMain
                 showToast(`Rates updated for ${nights} nights (${guests} guests, ${rooms} room${rooms > 1 ? 's' : ''})`, 'success');
                 document.getElementById('suites')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-md shadow-amber-500/25 flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-md shadow-amber-500/25 flex items-center gap-1.5 cursor-pointer"
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
               <span>Check Availability</span>
+            </button>
+          </div>
+
+          {/* Mobile Phone View (< md): Clean stacked booking card */}
+          <div className="md:hidden space-y-3">
+            {/* Dates row: two equal date inputs side by side with arrow */}
+            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-slate-400 block">Check-in</label>
+                <input
+                  type="date"
+                  value={checkIn}
+                  min={todayStr()}
+                  onChange={(e) => handleCheckInChange(e.target.value)}
+                  className="w-full bg-[#172136] border border-slate-700/80 rounded-xl px-2.5 py-2 text-base text-white focus:outline-none focus:border-amber-400"
+                  aria-label="Check-in date"
+                />
+              </div>
+              <span className="text-slate-400 mt-4 font-bold">→</span>
+              <div className="space-y-1">
+                <label className="text-[11px] font-semibold text-slate-400 block">Check-out</label>
+                <input
+                  type="date"
+                  value={checkOut}
+                  min={addDays(checkIn, 1)}
+                  onChange={(e) => handleCheckOutChange(e.target.value)}
+                  className="w-full bg-[#172136] border border-slate-700/80 rounded-xl px-2.5 py-2 text-base text-white focus:outline-none focus:border-amber-400"
+                  aria-label="Check-out date"
+                />
+              </div>
+            </div>
+
+            {/* Full-width X nights label */}
+            <div className="w-full py-1.5 text-center rounded-lg bg-amber-400/15 border border-amber-400/30 text-amber-300 font-bold text-xs">
+              {nights} {nights === 1 ? 'Night' : 'Nights'} Selected {isWeekend ? '· Weekend Rate (+15%)' : ''}
+            </div>
+
+            {/* Guests and Rooms: two separate rows with steppers right-aligned */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between p-2 rounded-xl bg-[#141d30] border border-white/5">
+                <span className="text-xs font-semibold text-slate-200">Guests</span>
+                <Stepper label="" value={guests} min={1} max={6} onChange={setGuests} />
+              </div>
+              <div className="flex items-center justify-between p-2 rounded-xl bg-[#141d30] border border-white/5">
+                <span className="text-xs font-semibold text-slate-200">Suites / Rooms</span>
+                <Stepper label="" value={rooms} min={1} max={4} onChange={setRooms} />
+              </div>
+            </div>
+
+            {/* Check availability: full-width button */}
+            <button
+              type="button"
+              onClick={() => {
+                setShowAvailabilityState(true);
+                showToast(`Rates updated for ${nights} nights (${guests} guests, ${rooms} room${rooms > 1 ? 's' : ''})`, 'success');
+                document.getElementById('suites')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="w-full h-11 min-h-[44px] rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 active:scale-[0.98] transition-all shadow-md shadow-amber-500/25 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              <span>Check Availability & Rates</span>
             </button>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-[500px] flex items-center justify-center px-4 sm:px-6 py-20 overflow-hidden text-center">
+      <section className="relative min-h-[500px] flex items-center justify-center px-4 sm:px-6 py-16 sm:py-20 overflow-hidden text-center">
         <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=80" alt="Royal Heritage Resort Luxury Villa" className="absolute inset-0 w-full h-full object-cover brightness-[0.38] scale-105 transition-transform duration-1000" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1d] via-[#0a0f1d]/50 to-black/60" />
         <div className="relative z-10 max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-950/70 border border-amber-400/40 text-amber-300 text-xs font-medium mb-5 shadow-lg">
-            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-            <span>Condé Nast Traveler Gold List · Luxury Heritage Winner 2026</span>
+          {/* Honesty cleanup: Neutral sample concept instead of fake Conde Nast award */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-950/70 border border-amber-400/40 text-amber-300 text-xs font-medium mb-5 shadow-lg max-w-full">
+            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 shrink-0" />
+            <span className="truncate">Heritage stay · Sample concept</span>
           </div>
-          <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-light text-white tracking-wide leading-tight mb-4">
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-7xl font-light text-white tracking-wide leading-tight mb-4">
             Where Heritage <span className="italic font-normal text-amber-300">Meets Luxury</span>
           </h1>
           <p className="text-slate-200 text-sm sm:text-base font-light max-w-2xl mx-auto mb-8 leading-relaxed drop-shadow">
             Experience regal 16th-century Rajputana opulence on the calm waters of Lake Pichola. Handcrafted royal suites, private plunge sanctuaries, and personalized 24/7 butler service.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a href="#suites" className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-xl shadow-amber-500/25 flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto sm:max-w-none">
+            <a href="#suites" className="w-full sm:w-auto h-12 min-h-[48px] px-6 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2 cursor-pointer">
               <span>Explore Royal Suites</span>
               <ArrowRight className="w-4 h-4" />
             </a>
-            <WhatsAppButton message={whatsappMessage} label="Inquire via WhatsApp" size="lg" />
+            <WhatsAppButton message={whatsappMessage} label="Inquire via WhatsApp" size="lg" className="w-full sm:w-auto h-12 min-h-[48px] justify-center" />
           </div>
         </div>
       </section>
@@ -893,8 +960,21 @@ export const HotelDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackToMain
         </div>
       )}
 
-      {/* Branded Demo Badge */}
-      <DemoBadge />
+      {/* Shared Mobile Bottom Action Bar (Phone only: < 768px) */}
+      <DemoMobileBottomBar
+        primaryAction={{
+          label: 'Book Stay',
+          href: '#suites',
+          icon: Calendar,
+          accentColorClass: 'bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-bold shadow-amber-500/25'
+        }}
+        secondaryAction={{
+          label: 'WhatsApp',
+          href: getWhatsAppUrl(whatsappMessage),
+          icon: MessageCircle,
+          accentColorClass: 'border-emerald-500/30 text-emerald-300 bg-emerald-500/10'
+        }}
+      />
     </div>
   );
 };

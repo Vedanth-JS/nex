@@ -41,7 +41,8 @@ import {
   DemoFormNote,
   FieldError,
   EmptyState,
-  Stepper
+  Stepper,
+  DemoMobileBottomBar
 } from './shared/components';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 
@@ -403,17 +404,20 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
   }, [category, dietary, searchTerm]);
 
   return (
-    <div className="min-h-screen bg-[#0c0a09] text-stone-200 font-sans selection:bg-amber-500 selection:text-stone-950 pb-20 sm:pb-8">
+    <div className="min-h-screen bg-[#0c0a09] text-stone-200 font-sans selection:bg-amber-500 selection:text-stone-950 pb-24 md:pb-8">
       <ToastContainer toasts={toasts} dismiss={dismiss} />
 
+      {/* Branded Demo Concept Tag in Document Flow */}
+      <DemoBadge />
+
       {/* Sticky Navigation */}
-      <nav className="sticky top-0 z-40 bg-[#0c0a09]/90 backdrop-blur-md border-b border-stone-800/80 px-4 sm:px-8 py-3.5 transition-all">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
+      <nav className="sticky top-0 z-40 bg-[#0c0a09]/95 backdrop-blur-md border-b border-stone-800/80 px-4 sm:px-8 py-3 transition-all">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0">
               <Sparkles className="w-4 h-4" />
             </span>
-            <a href="#hero" className="font-serif tracking-widest text-lg sm:text-xl font-bold text-amber-400 hover:text-amber-300 transition-colors">
+            <a href="#hero" className="font-serif tracking-widest text-base sm:text-xl font-bold text-amber-400 hover:text-amber-300 transition-colors truncate">
               SAVORIA BISTRO
             </a>
           </div>
@@ -425,7 +429,7 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
             <a href="#contact" className="hover:text-amber-400 transition-colors">Contact</a>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 shrink-0">
             <a
               href={getWhatsAppUrl("Hello Savoria Bistro, I'd like to place an order / make an enquiry.")}
               target="_blank"
@@ -446,7 +450,7 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
               type="button"
               aria-label={`Open Cart (${cartCount} items)`}
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2 rounded-xl bg-stone-900 border border-stone-800 hover:border-amber-500/50 text-stone-200 hover:text-amber-400 transition-all focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer"
+              className="relative p-2.5 rounded-xl bg-stone-900 border border-stone-800 hover:border-amber-500/50 text-stone-200 hover:text-amber-400 transition-all focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
               <ShoppingBag className="w-5 h-5" />
               {cartCount > 0 && (
@@ -460,7 +464,7 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
       </nav>
 
       {/* Hero Section */}
-      <section id="hero" className="relative min-h-[580px] sm:min-h-[640px] flex items-center justify-center overflow-hidden">
+      <section id="hero" className="relative min-h-[520px] sm:min-h-[640px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80"
@@ -470,12 +474,14 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
           <div className="absolute inset-0 bg-gradient-to-t from-[#0c0a09] via-[#0c0a09]/60 to-transparent" />
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 py-20 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono uppercase tracking-widest">
-            <Sparkles className="w-3.5 h-3.5" /> Michelin-Trained Artisanal Dining
+        <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 sm:py-20 text-center space-y-6">
+          {/* Honesty cleanup: Neutral description instead of Michelin */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono uppercase tracking-widest max-w-full">
+            <Sparkles className="w-3.5 h-3.5 shrink-0" />
+            <span className="truncate">Artisanal Fine Dining · Sample Concept</span>
           </div>
 
-          <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-stone-100 leading-tight">
+          <h1 className="font-serif text-3xl sm:text-6xl md:text-7xl font-bold tracking-tight text-stone-100 leading-tight">
             Culinary Artistry <br />
             <span className="text-amber-400 italic font-normal">Meets Modern Elegance</span>
           </h1>
@@ -484,23 +490,23 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
             Perigord truffles, Hokkaido uni, and wood-fire grilled delicacies curated daily by Chef Marco Valenti in the heart of Bengaluru.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 max-w-md mx-auto sm:max-w-none">
             <a
               href="#menu"
-              className="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-sm tracking-wide transition-all shadow-lg shadow-amber-500/30 focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer"
+              className="w-full sm:w-auto h-12 min-h-[48px] px-6 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-sm tracking-wide transition-all shadow-lg shadow-amber-500/30 flex items-center justify-center cursor-pointer"
             >
               Explore Menu
             </a>
             <a
               href="#reserve"
-              className="px-6 py-3 rounded-xl bg-stone-900/90 hover:bg-stone-800 text-stone-200 border border-stone-700 font-semibold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer"
+              className="w-full sm:w-auto h-12 min-h-[48px] px-6 rounded-xl bg-stone-900/90 hover:bg-stone-800 text-stone-200 border border-stone-700 font-semibold text-sm transition-all flex items-center justify-center cursor-pointer"
             >
               Reserve a Table
             </a>
           </div>
 
           {/* Stats / Info Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-8 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6 max-w-3xl mx-auto">
             <div className="p-3.5 rounded-2xl bg-stone-950/70 border border-stone-800/80 backdrop-blur-md flex items-center justify-center gap-3 text-left">
               <Clock className="w-5 h-5 text-amber-400 shrink-0" />
               <div>
@@ -520,8 +526,8 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
             <div className="p-3.5 rounded-2xl bg-stone-950/70 border border-stone-800/80 backdrop-blur-md flex items-center justify-center gap-3 text-left">
               <Award className="w-5 h-5 text-amber-400 shrink-0" />
               <div>
-                <p className="text-[11px] text-stone-400 uppercase font-mono">Accolades</p>
-                <p className="text-xs font-bold text-stone-200">4.9 ★ 1,400+ Reviews</p>
+                <p className="text-[11px] text-stone-400 uppercase font-mono">Dining Experience</p>
+                <p className="text-xs font-bold text-stone-200">Handcrafted Tasting Menu</p>
               </div>
             </div>
           </div>
@@ -543,8 +549,8 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
         {/* Filter Controls Bar */}
         <div className="space-y-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Category Tabs */}
-            <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            {/* Category Tabs: Horizontally scrollable chip row on mobile */}
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none snap-x flex-nowrap w-full md:w-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
               {[
                 { id: 'all', label: 'All Dishes' },
                 { id: 'mains', label: 'Mains' },
@@ -556,9 +562,9 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
                   key={cat.id}
                   type="button"
                   onClick={() => setCategory(cat.id as any)}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all ${
+                  className={`snap-start shrink-0 whitespace-nowrap px-4 py-2.5 sm:py-2 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer min-h-[44px] sm:min-h-0 flex items-center justify-center ${
                     category === cat.id
-                      ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20'
+                      ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20 font-bold'
                       : 'bg-stone-900 border border-stone-800 text-stone-400 hover:text-stone-200 hover:border-stone-700'
                   }`}
                 >
@@ -567,15 +573,15 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
               ))}
             </div>
 
-            {/* Search Input */}
+            {/* Search Input - 16px font on mobile to prevent iOS zoom */}
             <div className="relative w-full md:w-72">
-              <Search className="w-4 h-4 text-stone-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-stone-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search dishes or ingredients..."
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
-                className="w-full bg-stone-900 border border-stone-800 rounded-xl pl-9 pr-4 py-2 text-xs text-stone-200 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="w-full bg-stone-900 border border-stone-800 rounded-xl pl-9 pr-4 py-2.5 sm:py-2 text-base sm:text-xs text-stone-200 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[44px] sm:min-h-0"
               />
             </div>
           </div>
@@ -1322,39 +1328,27 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
         </div>
       )}
 
-      {/* Mobile Sticky Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-[#0c0a09]/95 backdrop-blur-md border-t border-stone-800 px-4 py-2.5 flex items-center justify-between">
-        <button
-          type="button"
-          aria-label={`Open Cart with ${cartCount} items`}
-          onClick={() => setIsCartOpen(true)}
-          className="flex items-center gap-2.5 text-stone-200"
-        >
-          <div className="relative">
-            <ShoppingBag className="w-5 h-5 text-amber-400" />
-            {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-2 bg-amber-500 text-stone-950 text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                {cartCount}
-              </span>
-            )}
-          </div>
-          <span className="text-xs font-semibold">
-            {cartCount > 0 ? `${formatINR(finalTotal)} (${cartCount})` : 'Cart (0)'}
-          </span>
-        </button>
+      {/* Shared Mobile Bottom Action Bar (Phone only: < 768px) */}
+      <DemoMobileBottomBar
+        primaryAction={{
+          label: 'Reserve Table',
+          href: '#reserve',
+          accentColorClass: 'bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold shadow-amber-500/20'
+        }}
+        secondaryAction={{
+          label: cartCount > 0 ? `Cart (${cartCount})` : 'Cart',
+          onClick: () => setIsCartOpen(true),
+          icon: ShoppingBag,
+          badge: cartCount > 0 ? cartCount : undefined,
+          accentColorClass: 'border-amber-500/30 text-amber-300 bg-amber-500/10'
+        }}
+      />
 
-        <a
-          href="#reserve"
-          className="px-4 py-2 rounded-xl bg-amber-500 text-stone-950 text-xs font-bold shadow-md shadow-amber-500/20"
-        >
-          Reserve Table
-        </a>
-      </div>
-
-      {/* Dish Customization Modal */}
+      {/* Dish Customization Modal: App-like Bottom Sheet on mobile */}
       {customizingDish && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-[#141210] border border-amber-500/30 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="bg-[#141210] border border-amber-500/30 rounded-t-3xl sm:rounded-3xl max-w-lg w-full max-h-[85dvh] overflow-y-auto overscroll-contain pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl animate-in slide-in-from-bottom-4 duration-200">
+            <div className="w-12 h-1 bg-white/20 rounded-full mx-auto my-2 sm:hidden shrink-0" />
             <div className="relative aspect-[16/9] w-full">
               <img src={customizingDish.image} alt={customizingDish.name} className="w-full h-full object-cover" />
               <button
@@ -1478,8 +1472,6 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
           </div>
         </div>
       )}
-
-      <DemoBadge />
     </div>
   );
 };

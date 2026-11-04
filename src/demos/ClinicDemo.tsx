@@ -11,7 +11,7 @@ import { useLocalStorage, useToast } from './shared/hooks';
 import { useDemoState } from './shared/DemoStateContext';
 import {
   DemoBadge, ToastContainer, WhatsAppButton, SkeletonImage, Reveal,
-  DemoFormNote, FieldError, EmptyState, AccordionItem
+  DemoFormNote, FieldError, EmptyState, AccordionItem, DemoMobileBottomBar
 } from './shared/components';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 
@@ -232,26 +232,32 @@ export const ClinicDemo: React.FC<{
   const upcomingWorkingDays = useMemo(() => getNextWorkingDates(8), []);
 
   return (
-    <div className="bg-slate-900 text-slate-100 min-h-screen font-sans selection:bg-cyan-500 selection:text-white">
+    <div className="bg-slate-900 text-slate-100 min-h-screen font-sans selection:bg-cyan-500 selection:text-white pb-24 md:pb-0">
+      <ToastContainer toasts={toasts} dismiss={dismiss} />
+
+      {/* Branded Demo Concept Tag in Document Flow */}
+      <DemoBadge />
+
       {/* 1. Emergency Banner (Always Visible at Top) */}
-      <header className="bg-slate-950/95 border-b border-cyan-900/40 px-4 py-2 text-xs sticky top-0 z-40 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${
+      <header className="bg-slate-950/95 border-b border-cyan-900/40 px-3 sm:px-4 py-2 text-xs sticky top-0 z-40 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border shrink-0 ${
               isClinicOpen ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40' : 'bg-amber-950/80 text-amber-300 border-amber-500/40'
             }`}>
               <span className={`w-2 h-2 rounded-full ${isClinicOpen ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-              {isClinicOpen ? 'Open Now (OPD: 9:00 AM - 8:00 PM)' : 'Closed Now (OPD: Mon-Sat 9AM-8PM)'}
+              <span className="hidden sm:inline">{isClinicOpen ? 'Open Now (OPD: 9:00 AM - 8:00 PM)' : 'Closed Now (OPD: Mon-Sat 9AM-8PM)'}</span>
+              <span className="sm:hidden">{isClinicOpen ? 'OPD Open' : 'OPD Closed'}</span>
             </span>
             <span className="hidden sm:inline text-slate-600">|</span>
-            <div className="flex items-center gap-2 text-slate-300 font-medium">
-              <PhoneCall className="w-3.5 h-3.5 text-rose-400" />
-              <span>Emergency: <a href="tel:18001234567" className="text-white hover:text-cyan-300 font-semibold" aria-label="Call Emergency Hotline">1800-XXX-XXXX</a></span>
-              <span className="text-slate-600">|</span>
-              <span>Ambulance: <a href="tel:108" className="text-rose-400 hover:text-rose-300 font-bold" aria-label="Call Ambulance 108">108</a></span>
+            <div className="flex items-center gap-2 text-slate-300 font-medium text-xs">
+              <PhoneCall className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+              <span>Emergency: <a href="tel:18001234567" className="text-white hover:text-cyan-300 font-bold" aria-label="Call Emergency Hotline">1800-XXX-XXXX</a></span>
+              <span className="hidden sm:inline text-slate-600">|</span>
+              <span className="hidden sm:inline">Ambulance: <a href="tel:108" className="text-rose-400 hover:text-rose-300 font-bold" aria-label="Call Ambulance 108">108</a></span>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-3 shrink-0">
             {onBackToMain && (
               <button type="button" onClick={onBackToMain} aria-label="Back to main portfolio" className="text-[11px] text-slate-400 hover:text-white flex items-center gap-1 transition-colors">
                 <ArrowLeft className="w-3 h-3" /> Back
@@ -268,17 +274,17 @@ export const ClinicDemo: React.FC<{
 
       {/* 2. Sticky Nav */}
       <nav className="bg-slate-900/95 border-b border-slate-800 px-4 py-3 sticky top-[37px] z-30 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-4">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20 shrink-0">
               <Stethoscope className="w-5 h-5" />
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-lg tracking-tight text-white">PulseCare</span>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/30">CLINIC</span>
+                <span className="font-extrabold text-base sm:text-lg tracking-tight text-white truncate">PulseCare</span>
+                <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/30 shrink-0">CLINIC</span>
               </div>
-              <p className="text-[10px] text-slate-400 hidden sm:block">NABH Accredited Multi-Specialty Clinic</p>
+              <p className="text-[10px] text-slate-400 hidden sm:block truncate">Multi-Specialty Care · Sample Concept</p>
             </div>
           </div>
 
@@ -296,13 +302,13 @@ export const ClinicDemo: React.FC<{
             <a href="#faqs" className="hover:text-cyan-400 transition-colors">FAQs</a>
           </div>
 
-          <div className="flex items-center gap-2.5">
-            <WhatsAppButton message="Hello PulseCare Clinic! I have an enquiry regarding doctor consultation and clinic timings." label="WhatsApp Enquiry" size="sm" />
+          <div className="flex items-center gap-2 shrink-0">
+            <WhatsAppButton message="Hello PulseCare Clinic! I have an enquiry regarding doctor consultation and clinic timings." label="WhatsApp" size="sm" className="hidden sm:inline-flex" />
             <button
               type="button"
               onClick={() => { setWizardStep(1); setIsWizardOpen(true); }}
               aria-label="Book doctor appointment"
-              className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:brightness-110 text-white text-xs font-semibold shadow-lg shadow-cyan-500/25 transition-all"
+              className="hidden sm:inline-flex px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:brightness-110 text-white text-xs font-semibold shadow-lg shadow-cyan-500/25 transition-all cursor-pointer"
             >
               Book Appointment
             </button>
@@ -310,14 +316,14 @@ export const ClinicDemo: React.FC<{
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 py-8 space-y-16">
+      <main className="max-w-7xl mx-auto px-4 py-8 space-y-12 sm:space-y-16">
         {/* Hero Section */}
         <section className="relative rounded-3xl overflow-hidden border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950/40 p-6 md:p-10 shadow-2xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-300 text-xs font-medium">
-                <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Verified Specialists · Digital Records · Instant Confirmation</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-300 text-xs font-medium max-w-full">
+                <ShieldCheck className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                <span className="truncate">Verified Specialists · Digital Records · Instant Confirmation</span>
               </div>
               <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
                 Modern Healthcare With <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-blue-400">Minimal Waiting Time</span>
@@ -325,31 +331,31 @@ export const ClinicDemo: React.FC<{
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl">
                 Consult verified specialists across Cardiology, Orthopedics, Pediatrics, and Dermatology. Choose your slot, book online, and sync directly with your calendar.
               </p>
-              <div className="flex flex-wrap gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2 max-w-md sm:max-w-none">
                 <button
                   type="button"
                   onClick={() => { setWizardStep(1); setIsWizardOpen(true); }}
                   aria-label="Book doctor appointment now"
-                  className="px-5 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs sm:text-sm transition-all shadow-xl shadow-cyan-500/20 flex items-center gap-2"
+                  className="w-full sm:w-auto h-12 min-h-[48px] px-5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs sm:text-sm transition-all shadow-xl shadow-cyan-500/20 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <CalendarIcon className="w-4 h-4" /> Book Appointment Now
                 </button>
-                <a href="#symptom-helper" aria-label="Match doctor by symptom" className="px-5 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs sm:text-sm font-semibold transition-all flex items-center gap-2">
+                <a href="#symptom-helper" aria-label="Match doctor by symptom" className="w-full sm:w-auto h-12 min-h-[48px] px-5 rounded-xl bg-slate-800/80 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2">
                   <Stethoscope className="w-4 h-4 text-cyan-400" /> Match by Symptom
                 </a>
               </div>
               <div className="grid grid-cols-3 gap-3 pt-4 border-t border-slate-800">
                 <div className="bg-slate-800/40 border border-slate-800 rounded-xl p-3">
-                  <p className="text-lg sm:text-xl font-bold text-cyan-400">18,500+</p>
-                  <p className="text-[11px] text-slate-400">Patients Treated</p>
+                  <p className="text-base sm:text-xl font-bold text-cyan-400">Multi-Specialty</p>
+                  <p className="text-[11px] text-slate-400">6 Departments</p>
                 </div>
                 <div className="bg-slate-800/40 border border-slate-800 rounded-xl p-3">
-                  <p className="text-lg sm:text-xl font-bold text-blue-400">&lt; 15 Mins</p>
+                  <p className="text-base sm:text-xl font-bold text-blue-400">&lt; 15 Mins</p>
                   <p className="text-[11px] text-slate-400">Average Wait Time</p>
                 </div>
                 <div className="bg-slate-800/40 border border-slate-800 rounded-xl p-3">
-                  <p className="text-lg sm:text-xl font-bold text-emerald-400">4.9 / 5</p>
-                  <p className="text-[11px] text-slate-400">Verified Patient Rating</p>
+                  <p className="text-base sm:text-xl font-bold text-emerald-400">Live Slots</p>
+                  <p className="text-[11px] text-slate-400">Instant Calendar Sync</p>
                 </div>
               </div>
             </div>
@@ -626,11 +632,12 @@ export const ClinicDemo: React.FC<{
         </section>
       </main>
 
-      {/* 5. 3-Step Booking Wizard Modal */}
+      {/* 5. 3-Step Booking Wizard Modal: Bottom sheet on mobile (< 768px) */}
       {isWizardOpen && (
-        <div role="dialog" aria-modal="true" aria-labelledby="wizard-title" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-slate-900 border border-slate-700 w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div role="dialog" aria-modal="true" aria-labelledby="wizard-title" className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-950/80 backdrop-blur-md">
+          <div className="bg-slate-900 border-t sm:border border-slate-700 w-full max-w-xl rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85dvh] overscroll-contain pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+            <div className="w-12 h-1 bg-white/20 rounded-full mx-auto my-2 sm:hidden shrink-0" />
+            <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
               <div>
                 <h3 id="wizard-title" className="text-base font-bold text-white flex items-center gap-2">
                   <Stethoscope className="w-4 h-4 text-cyan-400" />
@@ -643,7 +650,7 @@ export const ClinicDemo: React.FC<{
                   {wizardStep === 4 && 'Your appointment has been reserved successfully'}
                 </p>
               </div>
-              <button type="button" onClick={() => setIsWizardOpen(false)} aria-label="Close booking wizard" className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+              <button type="button" onClick={() => setIsWizardOpen(false)} aria-label="Close booking wizard" className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors cursor-pointer">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -656,7 +663,7 @@ export const ClinicDemo: React.FC<{
               </div>
             )}
 
-            <div className="p-6 overflow-y-auto space-y-5">
+            <div className="p-4 sm:p-6 overflow-y-auto space-y-5">
               {wizardStep === 1 && (
                 <div className="space-y-3">
                   <p className="text-xs font-semibold text-slate-300">Choose a consulting specialist:</p>
@@ -796,7 +803,7 @@ export const ClinicDemo: React.FC<{
                       value={patientName}
                       onChange={e => { setPatientName(e.target.value); if (nameError) setNameError(''); }}
                       aria-label="Patient Full Name"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-base sm:text-xs text-white focus:outline-none focus:border-cyan-400 min-h-[44px] sm:min-h-0"
                     />
                     <FieldError error={nameError} />
                   </div>
@@ -810,7 +817,7 @@ export const ClinicDemo: React.FC<{
                       value={patientPhone}
                       onChange={e => { setPatientPhone(e.target.value); if (phoneError) setPhoneError(''); }}
                       aria-label="Patient Phone Number"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-base sm:text-xs text-white focus:outline-none focus:border-cyan-400 min-h-[44px] sm:min-h-0"
                     />
                     <FieldError error={phoneError} />
                   </div>
@@ -824,7 +831,7 @@ export const ClinicDemo: React.FC<{
                       value={visitReason}
                       onChange={e => { setVisitReason(e.target.value); if (reasonError) setReasonError(''); }}
                       aria-label="Reason for medical visit"
-                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"
+                      className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-base sm:text-xs text-white focus:outline-none focus:border-cyan-400 min-h-[44px] sm:min-h-0"
                     />
                     <FieldError error={reasonError} />
                   </div>
@@ -941,9 +948,21 @@ export const ClinicDemo: React.FC<{
         </div>
       </footer>
 
-      {/* Global Shared Components */}
-      <DemoBadge />
-      <ToastContainer toasts={toasts} dismiss={dismiss} />
+      {/* Shared Mobile Bottom Action Bar (Phone only: < 768px) */}
+      <DemoMobileBottomBar
+        primaryAction={{
+          label: 'Book Appointment',
+          onClick: () => { setWizardStep(1); setIsWizardOpen(true); },
+          icon: CalendarIcon,
+          accentColorClass: 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:brightness-110 text-white font-bold shadow-cyan-500/25'
+        }}
+        secondaryAction={{
+          label: 'Emergency',
+          href: 'tel:18001234567',
+          icon: PhoneCall,
+          accentColorClass: 'border-rose-500/30 text-rose-300 bg-rose-500/10'
+        }}
+      />
     </div>
   );
 };

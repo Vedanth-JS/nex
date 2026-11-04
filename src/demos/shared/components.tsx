@@ -4,14 +4,93 @@ import { CheckCircle2, XCircle, Info, X, MessageCircle } from 'lucide-react';
 import type { Toast } from './hooks';
 import { getWhatsAppUrl } from '../../utils/whatsapp';
 
-/** Small branded demo badge */
-export const DemoBadge: React.FC = () => (
-  <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
-    <span className="text-[10px] font-mono px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md text-white/50 border border-white/10">
-      Demo concept by Nexora Technologies · Sample data only
+/** Small branded demo badge - in normal flow, single line, clean font */
+export const DemoBadge: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div className={`w-full py-1.5 px-3 bg-black/60 border-b border-white/5 text-center pointer-events-none select-none z-10 shrink-0 ${className}`}>
+    <span className="inline-flex items-center gap-1.5 text-[11px] font-sans text-slate-400">
+      <span className="w-1.5 h-1.5 rounded-full bg-amber-400/80 shrink-0" />
+      <span className="sm:hidden">Demo concept · Sample data</span>
+      <span className="hidden sm:inline">Demo concept by Nexora Technologies · Sample data only</span>
     </span>
   </div>
 );
+
+export interface DemoMobileBottomBarAction {
+  label: string;
+  onClick?: () => void;
+  href?: string;
+  icon?: React.ComponentType<{ className?: string }>;
+  badge?: number | string;
+  variant?: 'primary' | 'secondary';
+  accentColorClass?: string;
+}
+
+/** Consistent sticky bottom action bar for mobile viewports (< 768px) */
+export const DemoMobileBottomBar: React.FC<{
+  primaryAction: DemoMobileBottomBarAction;
+  secondaryAction?: DemoMobileBottomBarAction;
+  className?: string;
+}> = ({ primaryAction, secondaryAction, className = '' }) => {
+  const PrimaryIcon = primaryAction.icon;
+  const SecondaryIcon = secondaryAction?.icon;
+
+  return (
+    <aside
+      aria-label="Demo quick actions"
+      className={`md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#080914]/95 backdrop-blur-xl border-t border-white/10 px-4 py-2 pb-[max(0.625rem,env(safe-area-inset-bottom))] shadow-[0_-8px_25px_rgba(0,0,0,0.5)] flex items-center gap-3 ${className}`}
+    >
+      {secondaryAction && (
+        secondaryAction.href ? (
+          <a
+            href={secondaryAction.href}
+            className={`relative h-11 min-h-[44px] px-3.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-slate-200 active:scale-95 font-semibold text-xs flex items-center justify-center gap-2 transition-all shrink-0 cursor-pointer ${secondaryAction.accentColorClass || ''}`}
+          >
+            {SecondaryIcon && <SecondaryIcon className="w-4 h-4 shrink-0" />}
+            <span>{secondaryAction.label}</span>
+            {secondaryAction.badge !== undefined && secondaryAction.badge !== 0 && (
+              <span className="px-1.5 py-0.2 rounded-full bg-amber-400 text-slate-950 text-[10px] font-bold">
+                {secondaryAction.badge}
+              </span>
+            )}
+          </a>
+        ) : (
+          <button
+            type="button"
+            onClick={secondaryAction.onClick}
+            className={`relative h-11 min-h-[44px] px-3.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-slate-200 active:scale-95 font-semibold text-xs flex items-center justify-center gap-2 transition-all shrink-0 cursor-pointer ${secondaryAction.accentColorClass || ''}`}
+          >
+            {SecondaryIcon && <SecondaryIcon className="w-4 h-4 shrink-0" />}
+            <span>{secondaryAction.label}</span>
+            {secondaryAction.badge !== undefined && secondaryAction.badge !== 0 && (
+              <span className="px-1.5 py-0.2 rounded-full bg-amber-400 text-slate-950 text-[10px] font-bold">
+                {secondaryAction.badge}
+              </span>
+            )}
+          </button>
+        )
+      )}
+
+      {primaryAction.href ? (
+        <a
+          href={primaryAction.href}
+          className={`flex-1 h-11 min-h-[44px] px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-lg text-center cursor-pointer ${primaryAction.accentColorClass || 'bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-amber-400/25'}`}
+        >
+          {PrimaryIcon && <PrimaryIcon className="w-4 h-4 shrink-0" />}
+          <span className="truncate">{primaryAction.label}</span>
+        </a>
+      ) : (
+        <button
+          type="button"
+          onClick={primaryAction.onClick}
+          className={`flex-1 h-11 min-h-[44px] px-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-lg text-center cursor-pointer ${primaryAction.accentColorClass || 'bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-amber-400/25'}`}
+        >
+          {PrimaryIcon && <PrimaryIcon className="w-4 h-4 shrink-0" />}
+          <span className="truncate">{primaryAction.label}</span>
+        </button>
+      )}
+    </aside>
+  );
+};
 
 /** Toast renderer */
 export const ToastContainer: React.FC<{ toasts: Toast[]; dismiss: (id: string) => void }> = ({ toasts, dismiss }) => (
@@ -41,7 +120,7 @@ export const ToastContainer: React.FC<{ toasts: Toast[]; dismiss: (id: string) =
   </div>
 );
 
-/** Generic stepper button group */
+/** Generic stepper button group with accessible touch targets */
 export const Stepper: React.FC<{
   label: string;
   value: number;
@@ -50,22 +129,22 @@ export const Stepper: React.FC<{
   onChange: (v: number) => void;
   className?: string;
 }> = ({ label, value, min = 1, max = 20, onChange, className = '' }) => (
-  <div className={`flex items-center gap-2 ${className}`}>
-    <span className="text-xs text-slate-400 mr-1">{label}:</span>
+  <div className={`flex items-center gap-2.5 ${className}`}>
+    <span className="text-xs text-slate-300 font-medium mr-0.5">{label}:</span>
     <button
       type="button"
       aria-label={`Decrease ${label}`}
       onClick={() => onChange(Math.max(min, value - 1))}
       disabled={value <= min}
-      className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-40 flex items-center justify-center font-bold text-white transition-colors"
+      className="w-11 h-11 sm:w-8 sm:h-8 rounded-xl sm:rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 disabled:opacity-40 flex items-center justify-center font-bold text-white transition-colors cursor-pointer"
     >−</button>
-    <span className="text-sm font-bold text-white w-6 text-center">{value}</span>
+    <span className="text-sm font-bold text-white w-7 text-center tabular-nums">{value}</span>
     <button
       type="button"
       aria-label={`Increase ${label}`}
       onClick={() => onChange(Math.min(max, value + 1))}
       disabled={value >= max}
-      className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-40 flex items-center justify-center font-bold text-white transition-colors"
+      className="w-11 h-11 sm:w-8 sm:h-8 rounded-xl sm:rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 disabled:opacity-40 flex items-center justify-center font-bold text-white transition-colors cursor-pointer"
     >+</button>
   </div>
 );

@@ -30,7 +30,8 @@ import {
   DemoFormNote, 
   FieldError, 
   EmptyState, 
-  AccordionItem 
+  AccordionItem,
+  DemoMobileBottomBar
 } from './shared';
 
 // --- DATA DEFINITIONS ---
@@ -848,12 +849,14 @@ export const CoachingDemo: React.FC<{
   };
 
   return (
-    <div className="bg-[#0b0b18] text-slate-100 font-sans min-h-screen selection:bg-purple-600 selection:text-white">
+    <div className="bg-[#0b0b18] text-slate-100 font-sans min-h-screen selection:bg-purple-600 selection:text-white pb-24 md:pb-0">
       <ToastContainer toasts={toasts} dismiss={dismiss} />
+
+      {/* Branded Demo Concept Tag in Document Flow */}
       <DemoBadge />
 
-      {/* Top Banner */}
-      <div className="bg-purple-950/70 border-b border-purple-800/40 px-4 sm:px-6 py-2.5 text-xs flex justify-between items-center text-purple-200">
+      {/* Top Banner (Desktop only) */}
+      <div className="hidden md:flex bg-purple-950/70 border-b border-purple-800/40 px-4 sm:px-6 py-2.5 text-xs justify-between items-center text-purple-200">
         <div className="flex items-center gap-2">
           <Sparkles className="w-3.5 h-3.5 text-purple-400 shrink-0" />
           <span className="truncate">Demo preview: High-converting Coaching & EdTech portal by Nexora Technologies</span>
@@ -880,16 +883,16 @@ export const CoachingDemo: React.FC<{
       </div>
 
       {/* Sticky Nav */}
-      <nav className="bg-[#0b0b18]/90 backdrop-blur-md border-b border-purple-900/30 px-6 py-4 sticky top-0 z-30 flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-violet-500 flex items-center justify-center text-white shadow-lg shadow-purple-700/30">
+      <nav className="bg-[#0b0b18]/95 backdrop-blur-md border-b border-purple-900/30 px-4 sm:px-6 py-3.5 sticky top-0 z-30 flex justify-between items-center">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-violet-500 flex items-center justify-center text-white shadow-lg shadow-purple-700/30 shrink-0">
             <GraduationCap className="w-5 h-5 text-white" />
           </div>
-          <div>
-            <span className="font-serif text-lg sm:text-xl font-bold tracking-tight text-white block leading-none">
+          <div className="min-w-0">
+            <span className="font-serif text-base sm:text-xl font-bold tracking-tight text-white block leading-none truncate">
               Excel Academy
             </span>
-            <span className="text-[10px] text-purple-400 font-medium">Premier Civil & Medical Coaching</span>
+            <span className="text-[10px] text-purple-400 font-medium truncate block">Premier Civil & Medical Coaching</span>
           </div>
         </div>
 
@@ -902,11 +905,11 @@ export const CoachingDemo: React.FC<{
           <a href="#admissions" onClick={e => { e.preventDefault(); scrollTo('admissions'); }} className="hover:text-purple-300 transition-colors">Admissions</a>
         </div>
 
-        {/* CTA */}
-        <div className="flex items-center gap-3">
+        {/* Header CTA - Hidden on phones, moved to bottom bar */}
+        <div className="hidden sm:flex items-center gap-3 shrink-0">
           <button
             onClick={() => scrollTo('admissions')}
-            className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-all shadow-md shadow-purple-600/30"
+            className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-all shadow-md shadow-purple-600/30 cursor-pointer"
           >
             Book Free Demo
           </button>
@@ -914,12 +917,12 @@ export const CoachingDemo: React.FC<{
       </nav>
 
       {/* Hero Section */}
-      <header className="relative pt-12 pb-20 px-6 max-w-6xl mx-auto overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <header className="relative pt-10 sm:pt-12 pb-16 sm:pb-20 px-4 sm:px-6 max-w-6xl mx-auto overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-700/50 text-purple-300 text-xs font-medium mb-4">
-              <Award className="w-3.5 h-3.5 text-purple-400" />
-              <span>Admissions Open for 2026-27 Academic Batches</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-700/50 text-purple-300 text-xs font-medium mb-4 max-w-full">
+              <Award className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+              <span className="truncate">Admissions Open for 2026-27 Academic Batches</span>
             </div>
             
             <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight">
@@ -933,10 +936,10 @@ export const CoachingDemo: React.FC<{
               Rigorous classroom instruction, curated test series, 1-on-1 retired civil servant mentorship, and AI-driven weak-area tracking to elevate your exam preparations.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-4 items-center">
+            <div className="mt-8 flex flex-col sm:flex-row gap-3 items-center max-w-md sm:max-w-none">
               <button
                 onClick={() => scrollTo('courses')}
-                className="px-6 py-3.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-purple-600/30"
+                className="w-full sm:w-auto h-12 min-h-[48px] px-6 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-purple-600/30 flex items-center justify-center cursor-pointer"
               >
                 Explore Courses & Fees
               </button>
@@ -947,7 +950,7 @@ export const CoachingDemo: React.FC<{
                     setTestState('running');
                   }
                 }}
-                className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-white font-semibold text-xs transition-all flex items-center gap-2"
+                className="w-full sm:w-auto h-12 min-h-[48px] px-6 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-white font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Clock className="w-4 h-4 text-purple-400" />
                 <span>Take 10-Min Mock Test</span>
@@ -1533,6 +1536,22 @@ export const CoachingDemo: React.FC<{
           <p>© 2026-2027 Excel Academy Demo. Portfolio concept developed by Nexora Technologies.</p>
         </div>
       </footer>
+
+      {/* Shared Mobile Bottom Action Bar (Phone only: < 768px) */}
+      <DemoMobileBottomBar
+        primaryAction={{
+          label: 'Book Free Demo',
+          onClick: () => scrollTo('admissions'),
+          icon: GraduationCap,
+          accentColorClass: 'bg-purple-600 hover:bg-purple-500 text-white font-bold shadow-purple-600/30'
+        }}
+        secondaryAction={{
+          label: 'Fee Calculator',
+          onClick: () => scrollTo('calculator'),
+          icon: Calculator,
+          accentColorClass: 'border-purple-500/30 text-purple-300 bg-purple-500/10'
+        }}
+      />
     </div>
   );
 };

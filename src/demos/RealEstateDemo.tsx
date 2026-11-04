@@ -36,7 +36,8 @@ import {
   WhatsAppButton,
   SkeletonImage,
   DemoFormNote,
-  EmptyState
+  EmptyState,
+  DemoMobileBottomBar
 } from './shared/components';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 
@@ -312,12 +313,14 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
   };
 
   return (
-    <div className="bg-slate-950 text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-black pb-28">
+    <div className="bg-slate-950 text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-black pb-24 md:pb-0">
       <ToastContainer toasts={toasts} dismiss={dismissToast} />
+
+      {/* Branded Demo Concept Tag in Document Flow */}
       <DemoBadge />
 
-      {/* Top Banner */}
-      <div className="bg-emerald-950/40 border-b border-emerald-900/40 px-4 sm:px-6 py-2.5 text-xs flex flex-wrap justify-between items-center text-emerald-200">
+      {/* Top Banner (Desktop only) */}
+      <div className="hidden md:flex bg-emerald-950/40 border-b border-emerald-900/40 px-4 sm:px-6 py-2.5 text-xs justify-between items-center text-emerald-200">
         <div className="flex items-center gap-2">
           <Building className="w-4 h-4 text-emerald-400" />
           <span className="font-medium">
@@ -338,19 +341,19 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
       </div>
 
       {/* Sticky Main Navigation */}
-      <nav className="bg-slate-950/95 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-4 sticky top-0 z-30 flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center font-bold text-slate-950 shadow-lg shadow-emerald-500/20">
+      <nav className="bg-slate-950/95 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3.5 sticky top-0 z-30 flex justify-between items-center">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center font-bold text-slate-950 shadow-lg shadow-emerald-500/20 shrink-0">
             <Building className="w-5 h-5 text-slate-950" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-bold tracking-wider text-xl text-white uppercase font-display">SKYLINE</span>
-              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="font-bold tracking-wider text-lg sm:text-xl text-white uppercase font-display truncate">SKYLINE</span>
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30 shrink-0">
                 ESTATES
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 -mt-0.5">RERA Registered Prime Realty • Bangalore</p>
+            <p className="text-[10px] text-slate-400 -mt-0.5 truncate hidden sm:block">RERA Registered Prime Realty • Bangalore</p>
           </div>
         </div>
 
@@ -361,11 +364,11 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
           <a href="#why-skyline" className="hover:text-emerald-400 transition-colors">Why Choose Us</a>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
           {/* Saved Shortlist button */}
           <button
             onClick={() => setShowShortlistModal(true)}
-            className="relative p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 text-xs"
+            className="relative p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 text-xs min-h-[44px] min-w-[44px] justify-center"
             title="View Saved Shortlist"
           >
             <Heart className={`w-4 h-4 ${shortlist.length ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}`} />
@@ -381,33 +384,35 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
           {compareList.length > 0 && (
             <button
               onClick={() => setShowCompareModal(true)}
-              className="px-3 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+              className="px-3 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer min-h-[44px]"
             >
               <Compass className="w-3.5 h-3.5" />
-              <span>Compare ({compareList.length})</span>
+              <span className="hidden sm:inline">Compare</span>
+              <span>({compareList.length})</span>
             </button>
           )}
 
           <WhatsAppButton
             message="Hello Skyline Estates! I am looking to invest in luxury properties in Bengaluru. Please share current projects."
-            label="Enquire via WhatsApp"
+            label="WhatsApp"
             size="sm"
+            className="hidden sm:inline-flex"
           />
         </div>
       </nav>
 
       {/* Hero Section */}
-      <header className="relative pt-16 pb-20 px-4 sm:px-6 overflow-hidden">
+      <header className="relative pt-12 sm:pt-16 pb-16 sm:pb-20 px-4 sm:px-6 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-950/20 via-slate-950 to-slate-950 -z-10" />
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/40 text-emerald-400 text-xs font-medium mb-6">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Direct Builder Pricing • Zero Brokerage • 100% Legal Clear Titles</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/40 text-emerald-400 text-xs font-medium mb-5 max-w-full">
+              <Sparkles className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">Direct Builder Pricing • Zero Brokerage • Sample Concept</span>
             </div>
 
-            <h1 className="text-4xl sm:text-6xl font-extrabold text-white leading-tight font-display tracking-tight mb-6">
+            <h1 className="text-3xl sm:text-6xl font-extrabold text-white leading-tight font-display tracking-tight mb-5">
               Curated Addresses <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-500">
                 For Discerning Owners.
@@ -418,10 +423,10 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
               Discover Grade-A luxury apartments, private garden villas, and skyline penthouses situated in Bengaluru’s premier growth corridors.
             </p>
 
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-3 max-w-md sm:max-w-none">
               <a
                 href="#properties"
-                className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-xl shadow-emerald-950/50 flex items-center gap-2"
+                className="w-full sm:w-auto h-12 min-h-[48px] px-6 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-xl shadow-emerald-950/50 flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Browse {PROPERTIES.length} Premium Listings</span>
                 <ArrowRight className="w-4 h-4" />
@@ -429,7 +434,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
 
               <a
                 href="#emi-calculator"
-                className="px-6 py-3.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-slate-200 font-semibold text-xs uppercase tracking-wider transition-all flex items-center gap-2"
+                className="w-full sm:w-auto h-12 min-h-[48px] px-6 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-slate-200 font-semibold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Calculator className="w-4 h-4 text-emerald-400" />
                 <span>Calculate Monthly EMI</span>
@@ -531,7 +536,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
               <select
                 value={bhkFilter}
                 onChange={e => setBhkFilter(e.target.value)}
-                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer"
+                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2.5 sm:py-2 text-base sm:text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer min-h-[44px] sm:min-h-0"
               >
                 <option value="all">All Configurations</option>
                 <option value="2 BHK">2 BHK Apartments</option>
@@ -547,7 +552,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
               <select
                 value={locFilter}
                 onChange={e => setLocFilter(e.target.value)}
-                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer"
+                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2.5 sm:py-2 text-base sm:text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer min-h-[44px] sm:min-h-0"
               >
                 <option value="all">All Prime Localities</option>
                 <option value="Sarjapur Road">Sarjapur Road</option>
@@ -563,7 +568,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
               <select
                 value={statusFilter}
                 onChange={e => setStatusFilter(e.target.value)}
-                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer"
+                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2.5 sm:py-2 text-base sm:text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer min-h-[44px] sm:min-h-0"
               >
                 <option value="all">All Construction Stages</option>
                 <option value="Ready to Move">Ready to Move</option>
@@ -578,7 +583,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
               <select
                 value={furnishingFilter}
                 onChange={e => setFurnishingFilter(e.target.value)}
-                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer"
+                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2.5 sm:py-2 text-base sm:text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer min-h-[44px] sm:min-h-0"
               >
                 <option value="all">All Furnishing Types</option>
                 <option value="Fully Furnished">Fully Furnished</option>
@@ -593,7 +598,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as any)}
-                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer"
+                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2.5 sm:py-2 text-base sm:text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer min-h-[44px] sm:min-h-0"
               >
                 <option value="price-asc">Price: Low to High</option>
                 <option value="price-desc">Price: High to Low</option>
@@ -1211,17 +1216,17 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
       )}
 
       {/* ========================================================= */}
-      {/* SITE VISIT SCHEDULER MODAL                                */}
-      {/* ========================================================= */}
+      {/* SITE VISIT SCHEDULER MODAL */}
       {schedProperty && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-emerald-500/40 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-slate-900 border-t sm:border border-emerald-500/40 rounded-t-3xl sm:rounded-3xl p-5 sm:p-8 max-w-lg w-full shadow-2xl relative max-h-[85dvh] overflow-y-auto overscroll-contain pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <div className="w-12 h-1 bg-white/20 rounded-full mx-auto my-2 sm:hidden shrink-0" />
             <button
               onClick={() => {
                 setSchedProperty(null);
                 setVisitToken(null);
               }}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white"
+              className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -1283,7 +1288,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
                     <select
                       value={schedSlot}
                       onChange={e => setSchedSlot(e.target.value)}
-                      className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                      className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2.5 text-base sm:text-xs text-white focus:outline-none focus:border-emerald-500 min-h-[44px] sm:min-h-0"
                     >
                       <option value="10:00 AM">10:00 AM (Morning)</option>
                       <option value="11:30 AM">11:30 AM (Morning)</option>
@@ -1302,7 +1307,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
                     placeholder="e.g. Anand Murthy"
                     value={visitorName}
                     onChange={e => setVisitorName(e.target.value)}
-                    className="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-base sm:text-xs text-white focus:outline-none focus:border-emerald-500 min-h-[44px] sm:min-h-0"
                   />
                 </div>
 
@@ -1314,7 +1319,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
                     placeholder="e.g. 9876543210"
                     value={visitorPhone}
                     onChange={e => setVisitorPhone(e.target.value)}
-                    className="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-base sm:text-xs text-white focus:outline-none focus:border-emerald-500 min-h-[44px] sm:min-h-0"
                   />
                 </div>
 
@@ -1327,7 +1332,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
                         key={mode}
                         type="button"
                         onClick={() => setPickupMode(mode)}
-                        className={`p-2.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+                        className={`p-2.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer min-h-[44px] flex items-center justify-center text-center ${
                           pickupMode === mode
                             ? 'bg-emerald-600/30 border-emerald-400 text-emerald-300 shadow'
                             : 'bg-slate-950 border-white/10 text-slate-400 hover:text-white'
@@ -1348,7 +1353,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
                       placeholder="e.g. Flat 402, Prestige Palms, Indiranagar"
                       value={pickupAddress}
                       onChange={e => setPickupAddress(e.target.value)}
-                      className="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                      className="w-full bg-slate-950 border border-white/10 rounded-xl px-3.5 py-2.5 text-base sm:text-xs text-white focus:outline-none focus:border-emerald-500 min-h-[44px] sm:min-h-0"
                     />
                   </div>
                 )}
@@ -1368,14 +1373,14 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
       )}
 
       {/* ========================================================= */}
-      {/* SAVED SHORTLIST MODAL                                     */}
-      {/* ========================================================= */}
+      {/* SAVED SHORTLIST MODAL */}
       {showShortlistModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-white/10 rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl relative max-h-[85vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-slate-900 border-t sm:border border-white/10 rounded-t-3xl sm:rounded-3xl p-5 sm:p-8 max-w-xl w-full shadow-2xl relative max-h-[85dvh] overflow-y-auto overscroll-contain pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <div className="w-12 h-1 bg-white/20 rounded-full mx-auto my-2 sm:hidden shrink-0" />
             <button
               onClick={() => setShowShortlistModal(false)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white"
+              className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -1436,14 +1441,14 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
       )}
 
       {/* ========================================================= */}
-      {/* PROPERTY COMPARISON MODAL                                 */}
-      {/* ========================================================= */}
+      {/* PROPERTY COMPARISON MODAL */}
       {showCompareModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-slate-900 border border-white/10 rounded-3xl p-6 sm:p-8 max-w-4xl w-full shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/85 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-slate-900 border-t sm:border border-white/10 rounded-t-3xl sm:rounded-3xl p-5 sm:p-8 max-w-4xl w-full shadow-2xl relative max-h-[85dvh] overflow-y-auto overscroll-contain pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <div className="w-12 h-1 bg-white/20 rounded-full mx-auto my-2 sm:hidden shrink-0" />
             <button
               onClick={() => setShowCompareModal(false)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white"
+              className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -1536,6 +1541,23 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
           Real Estate Demo Showcase Portal Designed & Developed by Nexora Technologies
         </p>
       </footer>
+
+      {/* Shared Mobile Bottom Action Bar (Phone only: < 768px) */}
+      <DemoMobileBottomBar
+        primaryAction={{
+          label: 'Schedule Site Visit',
+          onClick: () => setSchedProperty(PROPERTIES[0]),
+          icon: Calendar,
+          accentColorClass: 'bg-gradient-to-r from-emerald-600 to-teal-500 hover:brightness-110 text-white font-bold shadow-emerald-950/50'
+        }}
+        secondaryAction={{
+          label: shortlist.length > 0 ? `Saved (${shortlist.length})` : 'Saved',
+          onClick: () => setShowShortlistModal(true),
+          icon: Heart,
+          badge: shortlist.length > 0 ? shortlist.length : undefined,
+          accentColorClass: 'border-emerald-500/30 text-emerald-300 bg-emerald-500/10'
+        }}
+      />
     </div>
   );
 };

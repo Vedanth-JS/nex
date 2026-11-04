@@ -30,7 +30,8 @@ import {
   WhatsAppButton,
   SkeletonImage,
   DemoFormNote,
-  EmptyState
+  EmptyState,
+  DemoMobileBottomBar
 } from './shared/components';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 
@@ -384,12 +385,14 @@ export const GymDemo: React.FC<GymDemoProps> = ({ onOrderThisWebsite }) => {
   }).join(' ');
 
   return (
-    <div className="bg-[#090a0f] text-slate-100 font-sans min-h-screen selection:bg-rose-500 selection:text-white pb-24">
+    <div className="bg-[#090a0f] text-slate-100 font-sans min-h-screen selection:bg-rose-500 selection:text-white pb-24 md:pb-0">
       <ToastContainer toasts={toasts} dismiss={dismissToast} />
+
+      {/* Branded Demo Concept Tag in Document Flow */}
       <DemoBadge />
 
-      {/* Top Notification Bar */}
-      <div className="bg-rose-950/40 border-b border-rose-900/40 px-4 sm:px-6 py-2.5 text-xs flex flex-wrap justify-between items-center text-rose-200">
+      {/* Top Notification Bar (Desktop only) */}
+      <div className="hidden md:flex bg-rose-950/40 border-b border-rose-900/40 px-4 sm:px-6 py-2.5 text-xs justify-between items-center text-rose-200">
         <div className="flex items-center gap-2">
           <Flame className="w-4 h-4 text-rose-500 animate-pulse" />
           <span className="font-medium">
@@ -410,19 +413,19 @@ export const GymDemo: React.FC<GymDemoProps> = ({ onOrderThisWebsite }) => {
       </div>
 
       {/* Sticky Main Navigation */}
-      <nav className="bg-[#0b0c16]/95 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-4 sticky top-0 z-30 flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center font-black text-black shadow-lg shadow-rose-600/30">
+      <nav className="bg-[#0b0c16]/95 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-3.5 sticky top-0 z-30 flex justify-between items-center">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center font-black text-black shadow-lg shadow-rose-600/30 shrink-0">
             <Dumbbell className="w-5 h-5 text-black" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-black tracking-wider text-xl text-white uppercase font-display">IRONPULSE</span>
-              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-rose-600/20 text-rose-400 font-bold border border-rose-500/30">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="font-black tracking-wider text-lg sm:text-xl text-white uppercase font-display truncate">IRONPULSE</span>
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-rose-600/20 text-rose-400 font-bold border border-rose-500/30 shrink-0">
                 FITNESS
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 -mt-0.5">Strength • Conditioning • Recovery</p>
+            <p className="text-[10px] text-slate-400 -mt-0.5 truncate hidden sm:block">Strength • Conditioning • Recovery</p>
           </div>
         </div>
 
@@ -436,11 +439,12 @@ export const GymDemo: React.FC<GymDemoProps> = ({ onOrderThisWebsite }) => {
           <a href="#tracker" className="hover:text-rose-400 transition-colors">Weight Tracker</a>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 shrink-0">
           <WhatsAppButton
             message="Hello IronPulse Fitness! I would like to inquire about membership packages and trainer availability."
-            label="Inquire via WhatsApp"
+            label="WhatsApp"
             size="sm"
+            className="hidden sm:inline-flex"
           />
           <a
             href="#pass"
@@ -903,13 +907,13 @@ export const GymDemo: React.FC<GymDemoProps> = ({ onOrderThisWebsite }) => {
             </p>
           </div>
 
-          {/* Day of Week Selector */}
-          <div className="flex flex-wrap gap-1 mt-4 md:mt-0">
+          {/* Day of Week Selector: Horizontally scrollable chip row on mobile */}
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none snap-x flex-nowrap mt-4 md:mt-0 pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
             {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(day => (
               <button
                 key={day}
                 onClick={() => setSelectedDay(day)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                className={`snap-start shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer min-h-[44px] min-w-[44px] flex items-center justify-center ${
                   selectedDay === day
                     ? 'bg-rose-600 text-white shadow-md'
                     : 'bg-[#121324] text-slate-400 hover:text-white border border-white/5'
@@ -1500,6 +1504,22 @@ export const GymDemo: React.FC<GymDemoProps> = ({ onOrderThisWebsite }) => {
           Gym & Fitness Demo Portal Designed & Developed by Nexora Technologies
         </p>
       </footer>
+
+      {/* Shared Mobile Bottom Action Bar (Phone only: < 768px) */}
+      <DemoMobileBottomBar
+        primaryAction={{
+          label: 'Claim Free Pass',
+          href: '#pass',
+          icon: Trophy,
+          accentColorClass: 'bg-gradient-to-r from-rose-600 to-rose-500 hover:brightness-110 text-white font-bold shadow-rose-900/30'
+        }}
+        secondaryAction={{
+          label: 'Plans',
+          href: '#plans',
+          icon: Dumbbell,
+          accentColorClass: 'border-rose-500/30 text-rose-300 bg-rose-500/10'
+        }}
+      />
     </div>
   );
 };
