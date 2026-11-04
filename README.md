@@ -10,7 +10,7 @@
 **Nexora Technologies** specializes in designing and developing affordable, professional websites for local businesses, startups, shops, restaurants, clinics, hotels, educational institutions, and service providers.
 
 * **Primary Objective**: Generate high-intent client inquiries and conversions for professional website development.
-* **Brand Theme**: Futuristic obsidian dark (`#050510`, `#0B1020`), Electric Purple (`#8B5CF6`), Neon Blue (`#2563EB`), Cyan highlights (`#22D3EE`), and crisp typography.
+* **Brand Theme**: Midnight Aurora — Obsidian background (`#07070D`), Surface (`#0E0F1C`), Elevated (`#151629`), Aurora Violet (`#7C5CFF`), Aurora Magenta (`#E14BFF`), Aurora Amber (`#FFB547`), Aurora Text (`#F5F3FF`), and Muted (`#A9A7C2`). Primary gradient: Violet → Magenta → Amber. CTA buttons: Amber fill with dark text & soft amber glow. Single persistent 3D world canvas powered by Three.js & Lenis.
 
 ---
 
@@ -103,13 +103,16 @@
 
 ## 📱 WhatsApp & Contact Configuration
 
-To update the business WhatsApp phone number or email, edit `src/utils/whatsapp.ts`:
+To update the business WhatsApp phone number, link, or email, edit `src/utils/whatsapp.ts`:
 
 ```typescript
 export const WHATSAPP_CONFIG = {
-  phoneNumber: '919876543210', // Replace with your 10-digit WhatsApp business number with country code (e.g. 91...)
-  agencyEmail: 'contact@nexoratechnologies.com',
-  agencyPhoneFormatted: '+91 98765 43210',
+  directChatUrl: 'https://wa.me/message/EXH65NF6VVGHN1',
+  phoneNumber: '917975976491',
+  agencyPhoneFormatted: '+91 79 7597 6491',
+  agencyEmail: 'contact.nexoratecnologies@gmail.com',
+  instagramHandle: 'nexora__technologies',
+  instagramUrl: 'https://instagram.com/nexora__technologies',
   defaultHeroMessage: "Hello Nexora Technologies, I'm interested in creating a website for my business. Please share the details.",
 };
 ```

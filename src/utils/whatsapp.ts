@@ -1,17 +1,27 @@
 // Nexora Technologies WhatsApp Configuration
 export const WHATSAPP_CONFIG = {
-  phoneNumber: '919876543210', // Configurable business WhatsApp number
-  agencyEmail: 'contact@nexoratechnologies.com',
-  agencyPhoneFormatted: '+91 98765 43210',
+  directChatUrl: 'https://wa.me/message/EXH65NF6VVGHN1',
+  phoneNumber: '917975976491', // Configurable business WhatsApp number
+  agencyPhoneFormatted: '+91 79 7597 6491',
+  agencyEmail: 'contact.nexoratecnologies@gmail.com',
+  instagramHandle: 'nexora__technologies',
+  instagramUrl: 'https://instagram.com/nexora__technologies',
   defaultHeroMessage: "Hello Nexora Technologies, I'm interested in creating a website for my business. Please share the details.",
 };
 
 /**
  * Generate a WhatsApp click-to-chat URL with a prefilled, URL-encoded message
  */
-export function getWhatsAppUrl(message: string, phone: string = WHATSAPP_CONFIG.phoneNumber): string {
-  const cleanPhone = phone.replace(/[^0-9]/g, '');
+export function getWhatsAppUrl(message?: string, target: string = WHATSAPP_CONFIG.directChatUrl): string {
+  if (!message || !message.trim()) {
+    return target.startsWith('http') ? target : `https://wa.me/${target.replace(/[^0-9]/g, '')}`;
+  }
   const encodedMsg = encodeURIComponent(message.trim());
+  if (target.startsWith('http')) {
+    const separator = target.includes('?') ? '&' : '?';
+    return `${target}${separator}text=${encodedMsg}`;
+  }
+  const cleanPhone = target.replace(/[^0-9]/g, '');
   return `https://wa.me/${cleanPhone}?text=${encodedMsg}`;
 }
 

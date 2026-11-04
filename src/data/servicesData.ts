@@ -25,7 +25,7 @@ export const MAIN_SERVICES: ServiceDetail[] = [
       'Ultra-fast 100% responsive design',
       'Built-in inquiry capture & WhatsApp forms'
     ],
-    gradient: 'from-purple-500/20 via-blue-500/10 to-transparent',
+    gradient: 'from-aurora-violet/20 via-aurora-magenta/10 to-transparent',
     demoId: 'real-estate'
   },
   {
@@ -42,7 +42,7 @@ export const MAIN_SERVICES: ServiceDetail[] = [
       'Direct WhatsApp food ordering integration',
       'Location map & opening hours display'
     ],
-    gradient: 'from-amber-500/20 via-orange-500/10 to-transparent',
+    gradient: 'from-aurora-amber/20 via-aurora-magenta/10 to-transparent',
     demoId: 'restaurant'
   },
   {
@@ -59,7 +59,7 @@ export const MAIN_SERVICES: ServiceDetail[] = [
       'Emergency helpline & quick WhatsApp contact',
       'Google Maps & patient consultation guidance'
     ],
-    gradient: 'from-cyan-500/20 via-blue-500/10 to-transparent',
+    gradient: 'from-aurora-violet/20 via-aurora-amber/10 to-transparent',
     demoId: 'clinic'
   },
   {
@@ -76,7 +76,7 @@ export const MAIN_SERVICES: ServiceDetail[] = [
       'Tour itinerary & sightseeing packages',
       'Instant WhatsApp booking assistance'
     ],
-    gradient: 'from-emerald-500/20 via-teal-500/10 to-transparent',
+    gradient: 'from-aurora-magenta/20 via-aurora-violet/10 to-transparent',
     demoId: 'hotel'
   },
   {
@@ -93,7 +93,7 @@ export const MAIN_SERVICES: ServiceDetail[] = [
       'WhatsApp order notification integration',
       'Simple product management & inventory tracking'
     ],
-    gradient: 'from-pink-500/20 via-purple-500/10 to-transparent',
+    gradient: 'from-aurora-magenta/20 via-aurora-amber/10 to-transparent',
   },
   {
     id: 'education',
@@ -109,7 +109,7 @@ export const MAIN_SERVICES: ServiceDetail[] = [
       'Student testimonials & exam rankers wall',
       'Syllabus PDF download & WhatsApp counseling'
     ],
-    gradient: 'from-blue-500/20 via-indigo-500/10 to-transparent',
+    gradient: 'from-aurora-violet/20 via-aurora-amber/10 to-transparent',
     demoId: 'coaching'
   }
 ];

@@ -131,7 +131,7 @@ export const HeroMockupPreview: React.FC<HeroMockupPreviewProps> = ({ onOpenDemo
       </div>
 
       {/* Glowing 3D Backing Aura */}
-      <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-500 opacity-30 blur-3xl -z-10" />
+      <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-aurora-violet via-aurora-magenta to-aurora-amber opacity-30 blur-3xl -z-10" />
 
       {/* Main 3D Browser Mockup Container */}
       <div
@@ -209,13 +209,19 @@ export const HeroMockupPreview: React.FC<HeroMockupPreviewProps> = ({ onOpenDemo
         </div>
 
         {/* Rendered Mockup Showcase Body with 3D Layers */}
-        <div className="relative min-h-[360px] sm:min-h-[440px] overflow-hidden group">
+        <div className="relative min-h-[360px] sm:min-h-[440px] overflow-hidden group bg-gradient-to-br from-amber-500/10 to-violet-500/10 bg-[#090d1c]">
           <img 
             src={current.image} 
-            alt={current.title}
+            alt=""
+            aria-label={current.title}
+            loading="lazy"
+            decoding="async"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
             className="w-full h-full object-cover min-h-[360px] sm:min-h-[440px] transition-transform duration-700 group-hover:scale-105 brightness-[0.7]" 
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#090d1c] via-[#090d1c]/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#090d1c] via-[#090d1c]/40 to-transparent pointer-events-none" />
 
           {/* Interactive 3D Overlay Box (Pops out in 3D!) */}
           <div 

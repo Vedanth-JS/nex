@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import Lenis from 'lenis';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { TrustAndValue } from './components/TrustAndValue';
@@ -22,6 +23,9 @@ import { DemoViewerModal } from './demos/DemoViewerModal';
 import { ConsultationModal } from './components/ConsultationModal';
 import { DemoId } from './types';
 
+// Lazy-load single persistent 3D world
+const World3D = lazy(() => import('./components/3d/World3D'));
+
 export function App() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [activeDemoId, setActiveDemoId] = useState<DemoId>('restaurant');
@@ -32,6 +36,43 @@ export function App() {
   // State to prepopulate contact form when user clicks specific service/plan/demo
   const [targetService, setTargetService] = useState<string>('Business Website');
   const [targetIndustry, setTargetIndustry] = useState<string>('Restaurant / Cafe');
+
+  const cursorGlowRef = useRef<HTMLDivElement | null>(null);
+
+  // Initialize Lenis smooth scroll and desktop cursor glow
+  useEffect(() => {
+    let lenis: Lenis | null = null;
+    let rafId: number;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReducedMotion && window.innerWidth >= 768) {
+      lenis = new Lenis({
+        duration: 1.1,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        smoothWheel: true,
+      });
+
+      const raf = (time: number) => {
+        lenis?.raf(time);
+        rafId = requestAnimationFrame(raf);
+      };
+      rafId = requestAnimationFrame(raf);
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (cursorGlowRef.current) {
+        cursorGlowRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      }
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      lenis?.destroy();
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
 
   // Trigger demo viewer modal
   const handleOpenDemo = (demoId: DemoId) => {
@@ -114,7 +155,22 @@ export function App() {
   };
 
   return (
-    <div className="bg-[#050510] text-slate-100 min-h-screen selection:bg-purple-500 selection:text-white">
+    <div className="bg-[#07070D] text-aurora-text min-h-screen selection:bg-aurora-violet/40 selection:text-white relative overflow-x-hidden">
+      {/* Subtle grain overlay (<3% opacity) */}
+      <div className="aurora-grain pointer-events-none" />
+
+      {/* Desktop soft cursor-glow */}
+      <div 
+        ref={cursorGlowRef}
+        className="hidden lg:block fixed pointer-events-none z-30 w-80 h-80 rounded-full blur-[100px] bg-gradient-to-tr from-aurora-violet/15 via-aurora-magenta/10 to-aurora-amber/15 -translate-x-1/2 -translate-y-1/2"
+        style={{ left: 0, top: 0, willChange: 'transform' }}
+      />
+
+      {/* Persistent 3D World (single WebGL canvas behind entire page) */}
+      <Suspense fallback={null}>
+        <World3D />
+      </Suspense>
+
       {/* Navigation Bar */}
       <Navbar 
         onOpenDemo={handleOpenDemo}

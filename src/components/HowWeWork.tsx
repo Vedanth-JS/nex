@@ -7,7 +7,6 @@ import {
   Headphones, 
   Check, 
   Sparkles,
-  ArrowRight
 } from 'lucide-react';
 import { WORK_PROCESS_STEPS } from '../data/processData';
 
@@ -21,53 +20,57 @@ const STEP_ICONS: Record<string, React.ElementType> = {
 
 export const HowWeWork: React.FC = () => {
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8 relative bg-[#070b18] overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section id="process" className="py-24 px-4 sm:px-6 lg:px-8 relative bg-aurora-bg/95 border-t border-white/5 overflow-hidden">
+      {/* Background Aurora Grid */}
+      <div className="absolute inset-0 aurora-grid opacity-20 pointer-events-none" />
+      <div className="absolute top-1/2 left-1/3 w-[600px] h-[300px] bg-aurora-violet/10 rounded-full blur-[140px] pointer-events-none -z-10" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-4">
-            <Rocket className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-aurora-surface border border-aurora-violet/40 text-aurora-amber text-xs font-semibold mb-4 shadow-sm">
+            <Rocket className="w-3.5 h-3.5 text-aurora-amber" />
             <span>Smooth 5-Step Execution Workflow</span>
           </div>
           <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
             How We Work With You From <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-300">
+            <span className="headline-shimmer">
               Concept to Live Deployment
             </span>
           </h2>
-          <p className="text-slate-300 text-base sm:text-lg mt-4 leading-relaxed">
+          <p className="text-aurora-muted text-base sm:text-lg mt-4 leading-relaxed">
             A frictionless, transparent process designed to get your website up and generating leads in days, not months.
           </p>
         </div>
 
         {/* 5 Process Steps Horizontal / Responsive Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 relative">
-          {WORK_PROCESS_STEPS.map((item, idx) => {
+          {WORK_PROCESS_STEPS.map((item) => {
             const Icon = STEP_ICONS[item.icon] || Sparkles;
             return (
               <div
                 key={item.step}
-                className="glass-card rounded-2xl p-6 border border-white/10 hover:border-cyan-500/40 transition-all duration-300 flex flex-col justify-between group hover:shadow-xl hover:shadow-cyan-950/20 bg-[#090e22]/90 relative"
+                className="glass-card-3d rounded-2xl p-6 border border-white/10 hover:border-aurora-amber/40 transition-all duration-300 flex flex-col justify-between group hover:shadow-2xl hover:-translate-y-1 bg-aurora-surface/90 relative"
               >
                 <div>
                   {/* Step Number with Gradient */}
                   <div className="flex items-center justify-between mb-4">
-                    <span className="font-display font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
+                    <span className="font-display font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-aurora-violet to-aurora-amber">
                       {item.step}
                     </span>
-                    <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-all shadow-sm">
+                    <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-aurora-amber group-hover:bg-aurora-amber group-hover:text-[#07070D] transition-all shadow-sm">
                       <Icon className="w-5 h-5" />
                     </div>
                   </div>
 
-                  <h3 className="font-display text-base font-bold text-white mb-1 group-hover:text-cyan-300 transition-colors">
+                  <h3 className="font-display text-base font-bold text-white mb-1 group-hover:text-aurora-amber transition-colors">
                     {item.title}
                   </h3>
-                  <p className="text-[11px] font-semibold text-purple-400 uppercase tracking-wider mb-2.5">
+                  <p className="text-[11px] font-semibold text-aurora-violet uppercase tracking-wider mb-2.5">
                     {item.tagline}
                   </p>
-                  <p className="text-slate-400 text-xs leading-relaxed mb-4">
+                  <p className="text-aurora-muted text-xs leading-relaxed mb-4">
                     {item.description}
                   </p>
                 </div>
@@ -75,8 +78,8 @@ export const HowWeWork: React.FC = () => {
                 {/* Deliverables list */}
                 <div className="pt-3 border-t border-white/5 space-y-1.5 mt-auto">
                   {item.deliverables.map((deliv, i) => (
-                    <div key={i} className="flex items-center gap-1.5 text-[10px] text-slate-300">
-                      <Check className="w-3 h-3 text-cyan-400 shrink-0" />
+                    <div key={i} className="flex items-center gap-1.5 text-[10px] text-aurora-text">
+                      <Check className="w-3 h-3 text-aurora-amber shrink-0" />
                       <span>{deliv}</span>
                     </div>
                   ))}
@@ -91,3 +94,5 @@ export const HowWeWork: React.FC = () => {
     </section>
   );
 };
+
+export default HowWeWork;
