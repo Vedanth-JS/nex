@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MessageCircle, X } from 'lucide-react';
 import { getWhatsAppUrl, WHATSAPP_CONFIG } from '../utils/whatsapp';
 
 export const FloatingWhatsApp: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(() => {
     if (typeof window === 'undefined') return false;
     try {
@@ -12,6 +13,27 @@ export const FloatingWhatsApp: React.FC = () => {
       return true;
     }
   });
+
+  // Hide button whenever a full-screen modal (e.g. DemoViewerModal or ConsultationModal) is active
+  useEffect(() => {
+    const checkModalState = () => {
+      if (typeof document === 'undefined') return;
+      const isLocked =
+        document.body.style.overflow === 'hidden' ||
+        document.body.hasAttribute('data-modal-open') ||
+        document.body.hasAttribute('data-demo-modal-open');
+      setIsModalOpen(Boolean(isLocked));
+    };
+
+    checkModalState();
+    const observer = new MutationObserver(checkModalState);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['style', 'data-modal-open', 'data-demo-modal-open'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleDismiss = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,8 +48,10 @@ export const FloatingWhatsApp: React.FC = () => {
 
   const whatsappUrl = getWhatsAppUrl(WHATSAPP_CONFIG.defaultHeroMessage);
 
+  if (isModalOpen) return null;
+
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex items-center gap-3 pointer-events-auto">
+    <div className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom,0px))] right-4 sm:right-6 z-40 flex items-center gap-3 pointer-events-auto">
       {/* Merged Single Dismissible Tooltip */}
       {showTooltip && (
         <div className="hidden sm:flex items-center gap-2.5 bg-aurora-elevated/95 text-white border border-emerald-500/40 px-3.5 py-2 rounded-2xl shadow-2xl backdrop-blur-md text-xs animate-fade-in group">
@@ -36,6 +60,7 @@ export const FloatingWhatsApp: React.FC = () => {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Chat directly on WhatsApp"
             className="font-medium text-aurora-text hover:text-emerald-300 transition-colors"
           >
             Need a website? Chat directly on WhatsApp
@@ -51,13 +76,13 @@ export const FloatingWhatsApp: React.FC = () => {
         </div>
       )}
 
-      {/* Floating Action Button */}
+      {/* Floating Action Button with min 48px tap target */}
       <a
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp with Nexora Technologies"
-        className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-emerald-600 via-emerald-500 to-teal-400 text-white flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.45)] hover:shadow-[0_0_35px_rgba(16,185,129,0.7)] hover:scale-105 active:scale-95 transition-all duration-300 relative group cursor-pointer"
+        className="w-13 h-13 min-w-[48px] min-h-[48px] sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-emerald-600 via-emerald-500 to-teal-400 text-white flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.45)] hover:shadow-[0_0_35px_rgba(16,185,129,0.7)] hover:scale-105 active:scale-95 transition-all duration-300 relative group cursor-pointer"
       >
         <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 border-2 border-[#07070D] flex items-center justify-center text-[9px] font-bold">
           1

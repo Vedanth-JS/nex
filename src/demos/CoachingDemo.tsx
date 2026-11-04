@@ -1192,7 +1192,7 @@ export const CoachingDemo: React.FC<{
                   </div>
 
                   <WhatsAppButton
-                    message={`Hello Excel Academy! I would like to enquire about ${course.title} (${course.batch}). Please share syllabus and brochure.`}
+                    message={`[Nexora demo - Excel Academy]\n\nHello Excel Academy! I would like to enquire about ${course.title} (${course.batch}). Please share syllabus and brochure.`}
                     label="Enquire on WhatsApp"
                     className="w-full justify-center"
                     size="sm"
@@ -1375,7 +1375,7 @@ export const CoachingDemo: React.FC<{
 
               <div className="flex flex-wrap justify-center gap-3 mt-6">
                 <WhatsAppButton
-                  message={`Hello Excel Academy! I booked a demo class for ${confirmation.course} with Token ${confirmation.token}. Please confirm my seat.`}
+                  message={`[Nexora demo - Excel Academy]\n\nHello Excel Academy! I booked a demo class for ${confirmation.course} with Token ${confirmation.token}. Please confirm my seat.`}
                   label="Confirm on WhatsApp"
                   size="sm"
                 />

@@ -441,7 +441,7 @@ export const GymDemo: React.FC<GymDemoProps> = ({ onOrderThisWebsite }) => {
 
         <div className="flex items-center gap-2.5 shrink-0">
           <WhatsAppButton
-            message="Hello IronPulse Fitness! I would like to inquire about membership packages and trainer availability."
+            message="[Nexora demo - IronPulse Fitness]&#10;&#10;Hello IronPulse Fitness! I would like to inquire about membership packages and trainer availability."
             label="WhatsApp"
             size="sm"
             className="hidden sm:inline-flex"
@@ -642,7 +642,7 @@ export const GymDemo: React.FC<GymDemoProps> = ({ onOrderThisWebsite }) => {
                 </div>
 
                 <a
-                  href={`https://wa.me/917975976491?text=${encodeURIComponent(`Hello IronPulse Fitness! I am interested in joining the ${plan.name} (${billingCycle} billing, ${formatINR(displayPrice)}). Please send registration details.`)}`}
+                  href={getWhatsAppUrl(`[Nexora demo - IronPulse Fitness]\n\nHello IronPulse Fitness! I am interested in joining the ${plan.name} (${billingCycle} billing, ${formatINR(displayPrice)}). Please send registration details.`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
@@ -1128,7 +1128,7 @@ export const GymDemo: React.FC<GymDemoProps> = ({ onOrderThisWebsite }) => {
 
               <div className="p-6 pt-0">
                 <a
-                  href={`https://wa.me/917975976491?text=${encodeURIComponent(`Hello IronPulse! I would like to book a 1-on-1 consultation session with ${trainer.name}.`)}`}
+                  href={getWhatsAppUrl(`[Nexora demo - IronPulse Fitness]\n\nHello IronPulse! I would like to book a 1-on-1 consultation session with ${trainer.name}.`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors border border-white/10"
@@ -1249,7 +1249,7 @@ export const GymDemo: React.FC<GymDemoProps> = ({ onOrderThisWebsite }) => {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a
-                  href={getWhatsAppUrl(`Hello IronPulse Fitness! I have generated my 7-Day Free VIP Pass (${generatedPass.id}) for ${generatedPass.name}. Please confirm my reception check-in.`)}
+                  href={getWhatsAppUrl(`[Nexora demo - IronPulse Fitness]\n\nHello IronPulse Fitness! I have generated my 7-Day Free VIP Pass (${generatedPass.id}) for ${generatedPass.name}. Please confirm my reception check-in.`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30"

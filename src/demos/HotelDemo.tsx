@@ -12,7 +12,7 @@ import {
   DemoBadge, ToastContainer, WhatsAppButton, SkeletonImage, DemoFormNote, FieldError, Stepper, AccordionItem,
   DemoMobileBottomBar
 } from './shared/components';
-import { getWhatsAppUrl } from '../utils/whatsapp';
+import { getWhatsAppUrl, openWhatsApp } from '../utils/whatsapp';
 
 interface Suite {
   id: string;
@@ -204,8 +204,8 @@ export const HotelDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackToMain
   };
 
   const whatsappMessage = bookingSuite
-    ? `Hello Royal Heritage Resort Concierge! I have confirmed reservation #${bookingToken} for ${bookingSuite.name} from ${checkIn} to ${checkOut} (${nights} nights, ${guests} guests). Guest: ${guestName} (${guestPhone}). Total: ${formatINR(grandTotal)}.`
-    : `Hello Royal Heritage Resort! I would like to inquire about room availability from ${checkIn} to ${checkOut} for ${guests} guests.`;
+    ? `[Nexora demo - Royal Heritage Resort]\n\nHello Royal Heritage Resort Concierge! I have confirmed reservation #${bookingToken} for ${bookingSuite.name} from ${checkIn} to ${checkOut} (${nights} nights, ${guests} guests). Guest: ${guestName} (${guestPhone}). Total: ${formatINR(grandTotal)}.`
+    : `[Nexora demo - Royal Heritage Resort]\n\nHello Royal Heritage Resort! I would like to inquire about room availability from ${checkIn} to ${checkOut} for ${guests} guests.`;
 
   return (
     <div className="bg-[#0a0f1d] text-slate-100 font-sans min-h-screen selection:bg-amber-500 selection:text-slate-950 pb-24 md:pb-0">
@@ -244,7 +244,7 @@ export const HotelDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackToMain
             <a href="#faq" className="hover:text-amber-400 transition-colors">Guest FAQ</a>
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <WhatsAppButton message="Hello Royal Heritage Resort! I would like to inquire about suite availability and royal packages." label="WhatsApp Concierge" size="sm" className="hidden sm:inline-flex" />
+            <WhatsAppButton message="[Nexora demo - Royal Heritage Resort]&#10;&#10;Hello Royal Heritage Resort! I would like to inquire about suite availability and royal packages." label="WhatsApp Concierge" size="sm" className="hidden sm:inline-flex" />
             <a href="#suites" className="hidden sm:inline-flex px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-md shadow-amber-500/20">Book Stay</a>
           </div>
         </nav>
@@ -476,7 +476,7 @@ export const HotelDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackToMain
                       <input type="checkbox" checked={isCompared} onChange={() => toggleCompare(suite.id)} className="w-4 h-4 rounded border-slate-700 bg-slate-800 text-amber-500 focus:ring-amber-400 accent-amber-500 cursor-pointer" />
                       <span className="font-medium">Compare Suite</span>
                     </label>
-                    <button onClick={() => window.open(getWhatsAppUrl(`Hello Royal Heritage Resort! Please share concierge details for ${suite.name} for ${nights} nights starting ${checkIn}.`), '_blank')} className="text-xs text-slate-400 hover:text-amber-300 transition-colors">
+                    <button type="button" onClick={() => openWhatsApp(`[Nexora demo - Royal Heritage Resort]\n\nHello Royal Heritage Resort! Please share concierge details for ${suite.name} for ${nights} nights starting ${checkIn}.`)} className="text-xs text-slate-400 hover:text-amber-300 active:scale-95 transition-colors cursor-pointer">
                       Inquire Tariff
                     </button>
                   </div>

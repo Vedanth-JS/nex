@@ -131,6 +131,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [botField, setBotField] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<{
+    fullName?: string;
+    businessName?: string;
+    phone?: string;
+    email?: string;
+  }>({});
   const [copiedPhone, setCopiedPhone] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
 
@@ -156,12 +163,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (fieldErrors[name as keyof typeof fieldErrors]) {
+      setFieldErrors(prev => ({ ...prev, [name]: undefined }));
+    }
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Only allow clean digits and hyphens without duplicate prefix collisions
     const sanitized = e.target.value.replace(/[^\d\s-]/g, '');
     setFormData(prev => ({ ...prev, phone: sanitized }));
+    if (fieldErrors.phone) {
+      setFieldErrors(prev => ({ ...prev, phone: undefined }));
+    }
   };
 
   const handleSelectBudget = (opt: typeof BUDGET_OPTIONS[0]) => {
@@ -211,21 +224,76 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setErrorMessage('');
 
-    if (!formData.fullName.trim() || !formData.phone.trim() || !formData.businessName.trim()) {
-      setErrorMessage('Please provide your name, business name, and WhatsApp phone number.');
-      setLoading(false);
+    // Honeypot check
+    if (botField) return;
+
+    const errors: { fullName?: string; businessName?: string; phone?: string; email?: string } = {};
+
+    if (!formData.fullName.trim()) {
+      errors.fullName = 'Please enter your full name.';
+    }
+    if (!formData.businessName.trim()) {
+      errors.businessName = 'Please enter your business or company name.';
+    }
+
+    const cleanPhone = formData.phone.replace(/\D/g, '').replace(/^91/, '');
+    if (!formData.phone.trim()) {
+      errors.phone = 'Please provide your 10-digit WhatsApp number.';
+    } else if (cleanPhone.length !== 10 || !/^[6-9]\d{9}$/.test(cleanPhone)) {
+      errors.phone = 'Please enter a valid 10-digit Indian mobile number (e.g. 9876543210).';
+    }
+
+    if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      errors.email = 'Please enter a valid email address.';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
       return;
     }
 
+    setFieldErrors({});
+    setLoading(true);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+
     try {
-      // Dispatch simultaneously across Email (Web3Forms), Google Sheets CRM, and localStorage
-      await dispatchLead({
-        ...formData,
-        submittedAt: new Date().toISOString()
+      // POST to Netlify Forms endpoint with urlencoded body
+      const bodyParams = new URLSearchParams({
+        'form-name': 'enquiry',
+        'bot-field': botField,
+        fullName: formData.fullName.trim(),
+        businessName: formData.businessName.trim(),
+        phone: cleanPhone,
+        email: formData.email.trim(),
+        businessCategory: formData.businessCategory,
+        websiteType: formData.websiteType,
+        budget: formData.budget,
+        projectDescription: formData.projectDescription.trim(),
       });
+
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: bodyParams.toString(),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`Netlify form submission failed: status ${response.status}`);
+      }
+
+      // Secondary background backups (localStorage, Web3Forms, Google Sheets) without blocking UI
+      dispatchLead({
+        ...formData,
+        phone: cleanPhone,
+        submittedAt: new Date().toISOString(),
+      }).catch(err => console.warn('[Backup Lead Dispatch]', err));
 
       setLoading(false);
       setSubmitted(true);
@@ -240,14 +308,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
         // Silently continue
       }
     } catch {
+      clearTimeout(timeoutId);
       setLoading(false);
-      setErrorMessage('Something went wrong submitting your enquiry. Please use WhatsApp directly.');
+      setErrorMessage("Couldn't send right now. Please tap Send on WhatsApp instead.");
+      // Preserves existing form values!
     }
-  };
-
-  const handleWhatsAppDirect = () => {
-    const message = formatLeadWhatsAppMessage(formData);
-    window.open(getWhatsAppUrl(message), '_blank');
   };
 
   return (
@@ -342,13 +407,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   <div className="space-y-2.5 sm:space-y-3">
                     
                     {/* CHANNEL 1: INSTANT WHATSAPP (Hero Suspended Capsule) */}
-                    <a 
-                      href={getWhatsAppUrl(WHATSAPP_CONFIG.defaultHeroMessage)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group/channel relative flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-emerald-950/45 via-emerald-900/20 to-[#0e0f1c]/90 border border-emerald-500/40 hover:border-emerald-400/80 active:scale-[0.98] transition-all duration-200 shadow-[0_4px_24px_rgba(16,185,129,0.14)] min-h-[58px]"
+                    <div 
+                      className="group/channel relative flex items-center justify-between p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-emerald-950/45 via-emerald-900/20 to-[#0e0f1c]/90 border border-emerald-500/40 hover:border-emerald-400/80 transition-all duration-200 shadow-[0_4px_24px_rgba(16,185,129,0.14)] min-h-[58px]"
                     >
-                      <div className="flex items-center gap-3 min-w-0 pr-2">
+                      <a 
+                        href={getWhatsAppUrl(WHATSAPP_CONFIG.defaultHeroMessage)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Chat directly on WhatsApp"
+                        className="flex items-center gap-3 min-w-0 pr-2 flex-1 active:opacity-85"
+                      >
                         <div className="w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30 group-hover/channel:scale-105 transition-transform shadow-[0_0_15px_rgba(16,185,129,0.25)]">
                           <MessageCircle className="w-5 h-5" />
                         </div>
@@ -368,22 +436,39 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                             Fastest replies • 9 AM – 9 PM IST
                           </p>
                         </div>
-                      </div>
+                      </a>
 
                       <div className="flex items-center gap-1.5 shrink-0">
+                        {/* Call us direct tel: button */}
+                        <a
+                          href={WHATSAPP_CONFIG.telHref}
+                          title="Call us directly"
+                          aria-label="Call Nexora Technologies directly"
+                          className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-emerald-500/10 hover:bg-emerald-500/25 active:scale-90 text-emerald-300 transition-colors border border-emerald-500/20"
+                        >
+                          <Phone className="w-4 h-4 text-emerald-400" />
+                        </a>
                         <button
                           type="button"
                           onClick={handleCopyPhone}
                           title="Copy phone number"
-                          className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-emerald-500/10 hover:bg-emerald-500/25 active:scale-90 text-emerald-300 transition-colors border border-emerald-500/20"
+                          aria-label="Copy phone number"
+                          className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl bg-emerald-500/10 hover:bg-emerald-500/25 active:scale-90 text-emerald-300 transition-colors border border-emerald-500/20 cursor-pointer"
                         >
                           {copiedPhone ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
                         </button>
-                        <div className="min-w-[38px] min-h-[38px] rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/channel:bg-emerald-500 group-hover/channel:text-black transition-all">
+                        <a
+                          href={getWhatsAppUrl(WHATSAPP_CONFIG.defaultHeroMessage)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Open WhatsApp"
+                          aria-label="Open WhatsApp chat in new window"
+                          className="min-w-[38px] min-h-[38px] rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 hover:bg-emerald-500 hover:text-black active:scale-90 transition-all"
+                        >
                           <ExternalLink className="w-4 h-4" />
-                        </div>
+                        </a>
                       </div>
-                    </a>
+                    </div>
 
                     {/* CHANNEL 2: OFFICIAL EMAIL */}
                     <div 
@@ -583,14 +668,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
                   {/* Action Buttons: Min 48px Tap Height */}
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <button
-                      onClick={handleWhatsAppDirect}
+                    <a
+                      href={getWhatsAppUrl(formatLeadWhatsAppMessage(formData))}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Continue on WhatsApp with prefilled specification"
                       className="w-full sm:w-auto min-h-[48px] px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 hover:brightness-110 active:scale-[0.98] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_10px_25px_rgba(16,185,129,0.3)] transition-all cursor-pointer"
                     >
                       <MessageCircle className="w-4 h-4" />
                       <span>Continue on WhatsApp</span>
                       <ArrowRight className="w-4 h-4" />
-                    </button>
+                    </a>
                     <button
                       onClick={() => setSubmitted(false)}
                       className="w-full sm:w-auto min-h-[48px] px-5 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 active:scale-[0.98] text-slate-300 hover:text-white font-semibold text-xs transition-all border border-white/10 cursor-pointer"
@@ -602,6 +690,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
               ) : (
                 /* Active Form */
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-4.5">
+                  {/* Hidden Netlify honeypot field */}
+                  <input
+                    type="text"
+                    name="bot-field"
+                    value={botField}
+                    onChange={(e) => setBotField(e.target.value)}
+                    className="hidden"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
                   
                   {/* Top Bar Header */}
                   <div className="flex items-center justify-between pb-3 border-b border-white/10">
@@ -620,9 +718,21 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   </div>
 
                   {errorMessage && (
-                    <div className="p-3 rounded-xl bg-rose-950/70 border border-rose-500/50 text-rose-200 text-xs flex items-center gap-2 shadow-lg animate-in fade-in">
-                      <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
-                      <span>{errorMessage}</span>
+                    <div className="p-3.5 rounded-xl bg-rose-950/70 border border-rose-500/50 text-rose-200 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 shadow-lg animate-in fade-in">
+                      <div className="flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                        <span>{errorMessage}</span>
+                      </div>
+                      <a
+                        href={getWhatsAppUrl(formatLeadWhatsAppMessage(formData))}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Send enquiry on WhatsApp instead"
+                        className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold text-[11px] uppercase tracking-wider flex items-center gap-1.5 shrink-0 transition-colors cursor-pointer"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" />
+                        <span>Send on WhatsApp</span>
+                      </a>
                     </div>
                   )}
 
@@ -632,7 +742,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       <label className="text-xs font-semibold text-slate-200">
                         Your Name <span className="text-aurora-amber">*</span>
                       </label>
-                      <div className="flex rounded-xl bg-[#080914]/90 border border-white/10 focus-within:border-aurora-amber/80 focus-within:ring-2 focus-within:ring-aurora-amber/20 shadow-inner transition-all overflow-hidden min-h-[48px]">
+                      <div className={`flex rounded-xl bg-[#080914]/90 border ${fieldErrors.fullName ? 'border-rose-500' : 'border-white/10 focus-within:border-aurora-amber/80'} focus-within:ring-2 focus-within:ring-aurora-amber/20 shadow-inner transition-all overflow-hidden min-h-[48px]`}>
                         <div className="flex items-center pl-3 text-aurora-muted">
                           <User className="w-4 h-4" />
                         </div>
@@ -646,13 +756,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                           className="w-full bg-transparent px-3 py-3 text-base sm:text-sm text-white placeholder:text-slate-500 focus:outline-none"
                         />
                       </div>
+                      {fieldErrors.fullName && (
+                        <p className="text-[11px] text-rose-400 flex items-center gap-1 mt-1">
+                          <AlertCircle className="w-3 h-3 shrink-0" />
+                          <span>{fieldErrors.fullName}</span>
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-1">
                       <label className="text-xs font-semibold text-slate-200">
                         Business Name <span className="text-aurora-amber">*</span>
                       </label>
-                      <div className="flex rounded-xl bg-[#080914]/90 border border-white/10 focus-within:border-aurora-amber/80 focus-within:ring-2 focus-within:ring-aurora-amber/20 shadow-inner transition-all overflow-hidden min-h-[48px]">
+                      <div className={`flex rounded-xl bg-[#080914]/90 border ${fieldErrors.businessName ? 'border-rose-500' : 'border-white/10 focus-within:border-aurora-amber/80'} focus-within:ring-2 focus-within:ring-aurora-amber/20 shadow-inner transition-all overflow-hidden min-h-[48px]`}>
                         <div className="flex items-center pl-3 text-aurora-muted">
                           <Building2 className="w-4 h-4" />
                         </div>
@@ -666,6 +782,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                           className="w-full bg-transparent px-3 py-3 text-base sm:text-sm text-white placeholder:text-slate-500 focus:outline-none"
                         />
                       </div>
+                      {fieldErrors.businessName && (
+                        <p className="text-[11px] text-rose-400 flex items-center gap-1 mt-1">
+                          <AlertCircle className="w-3 h-3 shrink-0" />
+                          <span>{fieldErrors.businessName}</span>
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -680,7 +802,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                           <span>WhatsApp Phone <span className="text-aurora-amber">*</span></span>
                         </span>
                       </label>
-                      <div className="flex rounded-xl bg-[#080914]/90 border border-white/10 focus-within:border-emerald-400/80 focus-within:ring-2 focus-within:ring-emerald-400/20 shadow-inner transition-all overflow-hidden min-h-[48px]">
+                      <div className={`flex rounded-xl bg-[#080914]/90 border ${fieldErrors.phone ? 'border-rose-500' : 'border-white/10 focus-within:border-emerald-400/80'} focus-within:ring-2 focus-within:ring-emerald-400/20 shadow-inner transition-all overflow-hidden min-h-[48px]`}>
                         <div className="flex items-center gap-1 px-3 bg-white/[0.04] border-r border-white/10 text-slate-300 font-mono text-xs select-none shrink-0 min-h-[48px]">
                           <span>🇮🇳</span>
                           <span className="font-bold text-emerald-400">+91</span>
@@ -695,27 +817,38 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                           className="w-full bg-transparent px-3 py-3 text-base sm:text-sm text-white placeholder:text-slate-500 focus:outline-none font-mono"
                         />
                       </div>
+                      {fieldErrors.phone && (
+                        <p className="text-[11px] text-rose-400 flex items-center gap-1 mt-1">
+                          <AlertCircle className="w-3 h-3 shrink-0" />
+                          <span>{fieldErrors.phone}</span>
+                        </p>
+                      )}
                     </div>
 
                     {/* Email Input */}
                     <div className="space-y-1">
                       <label className="text-xs font-semibold text-slate-200">
-                        Email Address <span className="text-aurora-amber">*</span>
+                        Email Address <span className="text-aurora-muted">(Optional)</span>
                       </label>
-                      <div className="flex rounded-xl bg-[#080914]/90 border border-white/10 focus-within:border-aurora-violet/80 focus-within:ring-2 focus-within:ring-aurora-violet/20 shadow-inner transition-all overflow-hidden min-h-[48px]">
+                      <div className={`flex rounded-xl bg-[#080914]/90 border ${fieldErrors.email ? 'border-rose-500' : 'border-white/10 focus-within:border-aurora-violet/80'} focus-within:ring-2 focus-within:ring-aurora-violet/20 shadow-inner transition-all overflow-hidden min-h-[48px]`}>
                         <div className="flex items-center pl-3 text-aurora-muted">
                           <Mail className="w-4 h-4" />
                         </div>
                         <input
                           type="email"
                           name="email"
-                          required
                           placeholder="ramesh@example.com"
                           value={formData.email}
                           onChange={handleChange}
                           className="w-full bg-transparent px-3 py-3 text-base sm:text-sm text-white placeholder:text-slate-500 focus:outline-none"
                         />
                       </div>
+                      {fieldErrors.email && (
+                        <p className="text-[11px] text-rose-400 flex items-center gap-1 mt-1">
+                          <AlertCircle className="w-3 h-3 shrink-0" />
+                          <span>{fieldErrors.email}</span>
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -925,14 +1058,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                     </button>
 
                     {/* Secondary WhatsApp Button */}
-                    <button
-                      type="button"
-                      onClick={handleWhatsAppDirect}
+                    <a
+                      href={getWhatsAppUrl(formatLeadWhatsAppMessage(formData))}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Chat directly on WhatsApp with prefilled enquiry"
                       className="w-full min-h-[48px] group/wa py-3.5 px-4 rounded-xl bg-[#0f241a] hover:bg-[#133224] active:scale-[0.98] text-emerald-300 border border-emerald-500/40 hover:border-emerald-400 font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.12)] transition-all cursor-pointer"
                     >
                       <MessageCircle className="w-4 h-4 text-emerald-400 group-hover/wa:scale-110 transition-transform" />
                       <span>CHAT ON WHATSAPP</span>
-                    </button>
+                    </a>
                   </div>
 
                   {/* ROW 8: SLA & Trust Footnote (Stacked on mobile with safe alignment) */}

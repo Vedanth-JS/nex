@@ -120,11 +120,15 @@ export const Footer: React.FC = () => {
             <div className="pt-2 text-aurora-muted space-y-2">
               <p className="flex items-center gap-2 text-xs">
                 <Phone className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span className="text-aurora-text font-medium">{WHATSAPP_CONFIG.agencyPhoneFormatted}</span>
+                <a href={WHATSAPP_CONFIG.telHref} className="text-aurora-text font-medium hover:text-emerald-300 transition-colors" aria-label="Call Nexora Technologies">
+                  {WHATSAPP_CONFIG.agencyPhoneFormatted}
+                </a>
               </p>
               <p className="flex items-center gap-2 text-xs">
                 <Mail className="w-3.5 h-3.5 text-aurora-violet shrink-0" />
-                <span className="text-aurora-text">{WHATSAPP_CONFIG.agencyEmail}</span>
+                <a href={`mailto:${WHATSAPP_CONFIG.agencyEmail}`} className="text-aurora-text hover:text-aurora-violet transition-colors" aria-label="Email Nexora Technologies">
+                  {WHATSAPP_CONFIG.agencyEmail}
+                </a>
               </p>
               <p className="flex items-center gap-2 text-xs">
                 <MapPin className="w-3.5 h-3.5 text-aurora-amber shrink-0" />

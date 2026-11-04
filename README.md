@@ -101,21 +101,21 @@
 
 ---
 
-## 📱 WhatsApp & Contact Configuration
+## 📱 WhatsApp & Lead Delivery Configuration
 
-To update the business WhatsApp phone number, link, or email, edit `src/utils/whatsapp.ts`:
+The agency WhatsApp number and official contact email use a **single source of truth** in `src/utils/whatsapp.ts`, configured via environment variables or fallback constants:
 
-```typescript
-export const WHATSAPP_CONFIG = {
-  directChatUrl: 'https://wa.me/message/EXH65NF6VVGHN1',
-  phoneNumber: '917975976491',
-  agencyPhoneFormatted: '+91 79 7597 6491',
-  agencyEmail: 'contact.nexoratecnologies@gmail.com',
-  instagramHandle: 'nexora__technologies',
-  instagramUrl: 'https://instagram.com/nexora__technologies',
-  defaultHeroMessage: "Hello Nexora Technologies, I'm interested in creating a website for my business. Please share the details.",
-};
+### Environment Variables (.env & Netlify)
+```env
+# Digits only with international country code (no "+", no spaces, no dashes)
+VITE_WHATSAPP_NUMBER=917975976491
+VITE_CONTACT_EMAIL=contact.nexoratecnologies@gmail.com
 ```
+
+### Lead Delivery (Netlify Forms & WhatsApp)
+- **Netlify Forms**: Submissions from the Enquiry Form and Consultation Modal are pre-registered in `index.html` and POST to `/` with urlencoded parameters.
+- **WhatsApp Direct**: If mobile visitors prefer instant chat or if a network error occurs, direct 1-tap WhatsApp buttons prefill the lead details into WhatsApp.
+- **Dev Diagnostic**: In development mode, run `window.__testWhatsApp()` in browser console to inspect number validity and generated URLs.
 
 ---
 

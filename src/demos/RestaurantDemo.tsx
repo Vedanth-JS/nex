@@ -256,7 +256,7 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
       const details = [i.spice, i.portion, ...(i.addOns || [])].filter(Boolean).join(', ');
       return `• ${i.name} x${i.qty} (${formatINR(i.price * i.qty)})${details ? ` [${details}]` : ''}`;
     }).join('\n');
-    return `🍽️ *Savoria Fine Dining Order*\n${itemsText}\n\n*Dining Mode:* ${orderType}\n*Subtotal:* ${formatINR(subtotal)}\n*GST (5%):* ${formatINR(gst)}${discount > 0 ? `\n*Promo Discount:* -${formatINR(discount)}` : ''}\n*Gratuity:* ${formatINR(tipAmount)}\n*Total Payable:* ${formatINR(finalTotal)}\n\nPlease confirm availability and dispatch!`;
+    return `[Nexora demo - Savoria Bistro]\n\n*Savoria Fine Dining Order*\n${itemsText}\n\n*Dining Mode:* ${orderType}\n*Subtotal:* ${formatINR(subtotal)}\n*GST (5%):* ${formatINR(gst)}${discount > 0 ? `\n*Promo Discount:* -${formatINR(discount)}` : ''}\n*Gratuity:* ${formatINR(tipAmount)}\n*Total Payable:* ${formatINR(finalTotal)}\n\nPlease confirm availability and dispatch!`;
   }, [cart, orderType, subtotal, gst, discount, tipAmount, finalTotal]);
 
   const addToCart = (dish: Dish) => {
@@ -431,10 +431,11 @@ export const RestaurantDemo: React.FC<{ onOrderThisWebsite?: () => void; onBackT
 
           <div className="flex items-center gap-2.5 shrink-0">
             <a
-              href={getWhatsAppUrl("Hello Savoria Bistro, I'd like to place an order / make an enquiry.")}
+              href={getWhatsAppUrl("[Nexora demo - Savoria Bistro]\n\nHello Savoria Bistro, I'd like to place an order / make an enquiry.")}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/80 hover:bg-emerald-900/90 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              aria-label="Order on WhatsApp"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/80 hover:bg-emerald-900/90 active:scale-95 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-emerald-400"
             >
               WhatsApp Order
             </a>

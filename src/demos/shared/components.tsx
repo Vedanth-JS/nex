@@ -2,7 +2,7 @@
 import React from 'react';
 import { CheckCircle2, XCircle, Info, X, MessageCircle } from 'lucide-react';
 import type { Toast } from './hooks';
-import { getWhatsAppUrl } from '../../utils/whatsapp';
+import { getWhatsAppUrl, openWhatsApp, isMobileOrTablet } from '../../utils/whatsapp';
 
 /** Small branded demo badge - in normal flow, single line, clean font */
 export const DemoBadge: React.FC<{ className?: string }> = ({ className = '' }) => (
@@ -156,16 +156,23 @@ export const WhatsAppButton: React.FC<{
   className?: string;
   size?: 'sm' | 'md' | 'lg';
 }> = ({ message, label = 'Chat on WhatsApp', className = '', size = 'md' }) => {
-  const sizeClass = size === 'sm' ? 'px-3 py-2 text-xs' : size === 'lg' ? 'px-6 py-4 text-sm' : 'px-4 py-2.5 text-xs';
+  const sizeClass = size === 'sm' ? 'px-3 py-2 text-xs min-h-[44px]' : size === 'lg' ? 'px-6 py-4 text-sm min-h-[48px]' : 'px-4 py-2.5 text-xs min-h-[44px]';
   return (
     <a
       href={getWhatsAppUrl(message)}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-all shadow-lg shadow-emerald-900/30 focus:outline-none focus:ring-2 focus:ring-emerald-400 ${sizeClass} ${className}`}
+      aria-label={label}
+      onClick={(e) => {
+        if (isMobileOrTablet()) {
+          e.preventDefault();
+          openWhatsApp(message);
+        }
+      }}
+      className={`inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-semibold transition-all shadow-lg shadow-emerald-900/30 focus:outline-none focus:ring-2 focus:ring-emerald-400 cursor-pointer ${sizeClass} ${className}`}
     >
       <MessageCircle className="w-4 h-4" />
-      {label}
+      <span>{label}</span>
     </a>
   );
 };

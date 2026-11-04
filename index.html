@@ -50,7 +50,7 @@
       "email": "contact.nexoratecnologies@gmail.com",
       "sameAs": [
         "https://instagram.com/nexora__technologies",
-        "https://wa.me/message/EXH65NF6VVGHN1"
+        "https://wa.me/917975976491"
       ],
       "slogan": "Building Digital Experiences",
       "priceRange": "₹2,999 - ₹25,000",
@@ -87,6 +87,28 @@
     </script>
   </head>
   <body class="bg-[#07070D] text-[#F5F3FF] font-sans antialiased selection:bg-[#7C5CFF]/40 selection:text-white min-h-screen overflow-x-hidden">
+    <!-- Static Hidden Forms for Netlify Build Detection (Vite SPA) -->
+    <form name="enquiry" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="enquiry" />
+      <input type="text" name="bot-field" />
+      <input type="text" name="fullName" />
+      <input type="text" name="businessName" />
+      <input type="tel" name="phone" />
+      <input type="email" name="email" />
+      <input type="text" name="businessCategory" />
+      <input type="text" name="websiteType" />
+      <input type="text" name="budget" />
+      <textarea name="projectDescription"></textarea>
+    </form>
+
+    <form name="consultation" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="consultation" />
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="tel" name="phone" />
+      <input type="text" name="businessType" />
+    </form>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -393,7 +393,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
           )}
 
           <WhatsAppButton
-            message="Hello Skyline Estates! I am looking to invest in luxury properties in Bengaluru. Please share current projects."
+            message="[Nexora demo - Skyline Estates]&#10;&#10;Hello Skyline Estates! I am looking to invest in luxury properties in Bengaluru. Please share current projects."
             label="WhatsApp"
             size="sm"
             className="hidden sm:inline-flex"
@@ -761,7 +761,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
                       </label>
 
                       <a
-                        href={getWhatsAppUrl(`Hello Skyline Estates! I would like to download the brochure and schedule a site visit for "${prop.title}".`)}
+                        href={getWhatsAppUrl(`[Nexora demo - Skyline Estates]\n\nHello Skyline Estates! I would like to download the brochure and schedule a site visit for "${prop.title}".`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-emerald-400 hover:underline flex items-center gap-1"
@@ -1202,7 +1202,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
                 Schedule Private Site Visit
               </button>
               <a
-                href={getWhatsAppUrl(`Hello Skyline Estates! I'm reviewing "${selectedProperty.title}" and would like to receive the complete project brochure and pricing sheet.`)}
+                href={getWhatsAppUrl(`[Nexora demo - Skyline Estates]\n\nHello Skyline Estates! I'm reviewing "${selectedProperty.title}" and would like to receive the complete project brochure and pricing sheet.`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2"
@@ -1253,7 +1253,7 @@ export const RealEstateDemo: React.FC<RealEstateDemoProps> = ({ onOrderThisWebsi
                     <span>Download Calendar (.ics)</span>
                   </button>
                   <a
-                    href={getWhatsAppUrl(`Hello Skyline Estates! I have scheduled a site visit for "${schedProperty.title}" on ${schedDate} at ${schedSlot}. My visit token is ${visitToken}.`)}
+                    href={getWhatsAppUrl(`[Nexora demo - Skyline Estates]\n\nHello Skyline Estates! I have scheduled a site visit for "${schedProperty.title}" on ${schedDate} at ${schedSlot}. My visit token is ${visitToken}.`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full sm:w-auto px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-2"

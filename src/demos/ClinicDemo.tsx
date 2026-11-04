@@ -13,7 +13,7 @@ import {
   DemoBadge, ToastContainer, WhatsAppButton, SkeletonImage, Reveal,
   DemoFormNote, FieldError, EmptyState, AccordionItem, DemoMobileBottomBar
 } from './shared/components';
-import { getWhatsAppUrl } from '../utils/whatsapp';
+import { getWhatsAppUrl, WHATSAPP_CONFIG } from '../utils/whatsapp';
 
 interface Doctor {
   id: string;
@@ -252,7 +252,7 @@ export const ClinicDemo: React.FC<{
             <span className="hidden sm:inline text-slate-600">|</span>
             <div className="flex items-center gap-2 text-slate-300 font-medium text-xs">
               <PhoneCall className="w-3.5 h-3.5 text-rose-400 shrink-0" />
-              <span>Emergency: <a href="tel:18001234567" className="text-white hover:text-cyan-300 font-bold" aria-label="Call Emergency Hotline">1800-XXX-XXXX</a></span>
+              <span>Emergency: <a href={WHATSAPP_CONFIG.telHref} className="text-white hover:text-cyan-300 font-bold" aria-label="Call Emergency Hotline">{WHATSAPP_CONFIG.agencyPhoneFormatted}</a></span>
               <span className="hidden sm:inline text-slate-600">|</span>
               <span className="hidden sm:inline">Ambulance: <a href="tel:108" className="text-rose-400 hover:text-rose-300 font-bold" aria-label="Call Ambulance 108">108</a></span>
             </div>
@@ -303,7 +303,7 @@ export const ClinicDemo: React.FC<{
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            <WhatsAppButton message="Hello PulseCare Clinic! I have an enquiry regarding doctor consultation and clinic timings." label="WhatsApp" size="sm" className="hidden sm:inline-flex" />
+            <WhatsAppButton message="[Nexora demo - PulseCare Clinic]&#10;&#10;Hello PulseCare Clinic! I have an enquiry regarding doctor consultation and clinic timings." label="WhatsApp" size="sm" className="hidden sm:inline-flex" />
             <button
               type="button"
               onClick={() => { setWizardStep(1); setIsWizardOpen(true); }}
@@ -595,7 +595,7 @@ export const ClinicDemo: React.FC<{
                   </div>
                   <div className="flex items-center justify-between pt-1">
                     <a
-                      href={getWhatsAppUrl(`Hello PulseCare Clinic! I have a confirmed appointment (${appt.token}) on ${appt.date} with ${appt.doctorName}.`)}
+                      href={getWhatsAppUrl(`[Nexora demo - PulseCare Clinic]\n\nHello PulseCare Clinic! I have a confirmed appointment (${appt.token}) on ${appt.date} with ${appt.doctorName}.`)}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Enquire on WhatsApp about appointment"
@@ -869,7 +869,7 @@ export const ClinicDemo: React.FC<{
                       <Download className="w-3.5 h-3.5 text-cyan-400" /> Add to Calendar (.ics)
                     </button>
                     <a
-                      href={getWhatsAppUrl(`PulseCare Clinic Booking Summary:\nToken: ${confirmedAppt.token}\nDoctor: ${confirmedAppt.doctorName}\nDate: ${confirmedAppt.date} (${confirmedAppt.slot})\nPatient: ${confirmedAppt.patientName}\nFee: ₹${confirmedAppt.fee}`)}
+                      href={getWhatsAppUrl(`[Nexora demo - PulseCare Clinic]\n\nPulseCare Clinic Booking Summary:\nToken: ${confirmedAppt.token}\nDoctor: ${confirmedAppt.doctorName}\nDate: ${confirmedAppt.date} (${confirmedAppt.slot})\nPatient: ${confirmedAppt.patientName}\nFee: ₹${confirmedAppt.fee}`)}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Share appointment on WhatsApp"
@@ -943,7 +943,7 @@ export const ClinicDemo: React.FC<{
           <div className="space-y-2 text-[11px]">
             <p className="font-semibold text-white uppercase text-[10px] tracking-wider">Emergency Notice</p>
             <p className="text-slate-300">For acute cardiac events, severe trauma, or life-threatening emergencies, please call <strong className="text-rose-400">108</strong> or visit our 24/7 trauma desk immediately.</p>
-            <p className="text-[10px] text-slate-400 italic">Emergency Hotline: 1800-123-4567 | WhatsApp: +91 79 7597 6491</p>
+            <p className="text-[10px] text-slate-400 italic">Emergency Hotline: {WHATSAPP_CONFIG.agencyPhoneFormatted} | WhatsApp: {WHATSAPP_CONFIG.agencyPhoneFormatted}</p>
           </div>
         </div>
       </footer>
@@ -958,7 +958,7 @@ export const ClinicDemo: React.FC<{
         }}
         secondaryAction={{
           label: 'Emergency',
-          href: 'tel:18001234567',
+          href: WHATSAPP_CONFIG.telHref,
           icon: PhoneCall,
           accentColorClass: 'border-rose-500/30 text-rose-300 bg-rose-500/10'
         }}

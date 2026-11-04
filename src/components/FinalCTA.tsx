@@ -72,7 +72,8 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onStartProject }) => {
             href={getWhatsAppUrl("Hello Nexora Technologies! I want to start my business website.")}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto px-8 py-4 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/20 transition-all cursor-pointer"
+            aria-label="Chat on WhatsApp with Nexora Technologies"
+            className="w-full sm:w-auto min-h-[48px] px-8 py-4 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 active:scale-95 text-emerald-300 border border-emerald-500/40 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/20 transition-all cursor-pointer"
           >
             <MessageCircle className="w-4 h-4 text-emerald-400" />
             <span>CHAT ON WHATSAPP</span>

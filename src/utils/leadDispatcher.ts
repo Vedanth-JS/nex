@@ -1,3 +1,5 @@
+import { CONFIGURED_EMAIL } from './whatsapp';
+
 // Lead Transmission Service for Nexora Technologies
 // Handles multi-channel dispatch: Email (Web3Forms), Google Sheets (Apps Script Webhook), Local Backup
 
@@ -21,8 +23,8 @@ export const LEAD_CONFIG = {
   googleSheetsUrl: (import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL as string | undefined) || 
     'https://script.google.com/macros/s/AKfycbx8UG9ZOQkN-iRk2cuAIBg1F1TWlBW2tTCLo41FU5uLlbeiW_LGDbnExTKx5OHDRxDLbQ/exec',
   
-  // Default recipient agency email
-  recipientEmail: 'contact.nexoratecnologies@gmail.com',
+  // Single source of truth recipient agency email
+  recipientEmail: CONFIGURED_EMAIL,
 };
 
 /**

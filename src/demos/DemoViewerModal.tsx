@@ -55,7 +55,7 @@ const DEMOS_LIST: {
     icon: UtensilsCrossed,
     turnaround: '48–72h',
     features: ['Categorized Menu + Search', 'Dietary & Spice Modifiers', 'Cart Drawer + Promo NEXORA10', 'WhatsApp Payload Export', 'Table Reservation + Floor Plan', 'Live Order Timeline Tracker'],
-    waMessage: "Hi Nexora! I saw your Restaurant demo (Savoria Bistro) and I'd like a similar website for my restaurant. Please contact me."
+    waMessage: "[Nexora demo - Savoria Bistro]\n\nHi Nexora! I saw your Restaurant demo (Savoria Bistro) and I'd like a similar website for my restaurant. Please contact me."
   },
   {
     id: 'clinic',
@@ -65,7 +65,7 @@ const DEMOS_LIST: {
     icon: HeartPulse,
     turnaround: '48–72h',
     features: ['Doctor Directory & OPD Shifts', 'Specialty + Search Filters', 'Which Specialist? Helper', '3-Step Booking Wizard', 'Instant OPD Token Generation', 'Simulated SMS/WhatsApp Dispatch', 'My Appointments + ICS Export'],
-    waMessage: "Hi Nexora! I saw your Clinic demo (PulseCare) and I'd like a similar website for my clinic. Please contact me."
+    waMessage: "[Nexora demo - PulseCare Clinic]\n\nHi Nexora! I saw your Clinic demo (PulseCare) and I'd like a similar website for my clinic. Please contact me."
   },
   {
     id: 'hotel',
@@ -75,7 +75,7 @@ const DEMOS_LIST: {
     icon: Hotel,
     turnaround: '3–5 Days',
     features: ['Dynamic Night Calculator', 'Seasonal Weekend Pricing', 'Interactive Lightbox Gallery', 'Virtual Amenity Checklists', 'Suite Comparison Matrix', 'Add-on Luxury Packages', 'Instant Booking Reference'],
-    waMessage: "Hi Nexora! I saw your Hotel demo (Royal Heritage Resort) and I'd like a similar website for my hotel. Please contact me."
+    waMessage: "[Nexora demo - Royal Heritage Resort]\n\nHi Nexora! I saw your Hotel demo (Royal Heritage Resort) and I'd like a similar website for my hotel. Please contact me."
   },
   {
     id: 'coaching',
@@ -85,7 +85,7 @@ const DEMOS_LIST: {
     icon: GraduationCap,
     turnaround: '48–72h',
     features: ['Modular Course & Track Finder', 'Interactive Track Fee Calculator', 'Installments & Scholarship Deduction', '10-Q Timed Mock Test Engine', 'Question Palette & Review Mode', 'Free Counselling & Demo Booking'],
-    waMessage: "Hi Nexora! I saw your Coaching demo (Excel Academy) and I'd like a similar website for my coaching centre. Please contact me."
+    waMessage: "[Nexora demo - Excel Academy]\n\nHi Nexora! I saw your Coaching demo (Excel Academy) and I'd like a similar website for my coaching centre. Please contact me."
   },
   {
     id: 'gym',
@@ -95,7 +95,7 @@ const DEMOS_LIST: {
     icon: Dumbbell,
     turnaround: '48–72h',
     features: ['Membership Duration Comparator', 'Perk Checklist Matrix', '1-Day Free Trial Pass Generator', 'Instant SVG QR & Barcode Pass', 'BMI & Calorie Macro Calculator', 'Weekly Class Spot Booking', 'SVG Weight Progress Tracker'],
-    waMessage: "Hi Nexora! I saw your Gym demo (IronPulse Fitness) and I'd like a similar website for my fitness centre. Please contact me."
+    waMessage: "[Nexora demo - IronPulse Fitness]\n\nHi Nexora! I saw your Gym demo (IronPulse Fitness) and I'd like a similar website for my fitness centre. Please contact me."
   },
   {
     id: 'real-estate',
@@ -105,7 +105,7 @@ const DEMOS_LIST: {
     icon: Building2,
     turnaround: '3–5 Days',
     features: ['Multi-Filter (BHK, Budget, Furnishing, Status)', 'Grid/List View & Sorting', 'Property Shortlist + Local Storage', '3-Property Comparison Matrix', 'EMI Calculator with SVG Donut', 'Site Visit Scheduler + Free Cab Pickup', 'Interactive Locality Vector Map'],
-    waMessage: "Hi Nexora! I saw your Real Estate demo (Skyline Estates) and I'd like a similar website for my real estate business. Please contact me."
+    waMessage: "[Nexora demo - Skyline Estates]\n\nHi Nexora! I saw your Real Estate demo (Skyline Estates) and I'd like a similar website for my real estate business. Please contact me."
   },
 ];
 
@@ -213,10 +213,12 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
     if (isOpen) {
       window.addEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'hidden';
+      document.body.setAttribute('data-demo-modal-open', 'true');
     }
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
+      document.body.removeAttribute('data-demo-modal-open');
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, activeIdx, showFeatures]);

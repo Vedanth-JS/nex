@@ -125,7 +125,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenDemo: _onOpenDemo, onOpenC
               href={getWhatsAppUrl(WHATSAPP_CONFIG.defaultHeroMessage)}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all text-xs font-semibold flex items-center gap-1.5 shadow-sm"
+              aria-label="Chat on WhatsApp with Nexora Technologies"
+              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 active:scale-95 text-emerald-400 border border-emerald-500/30 transition-all text-xs font-semibold flex items-center gap-1.5 shadow-sm"
               title="Chat on WhatsApp"
             >
               <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
@@ -192,7 +193,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenDemo: _onOpenDemo, onOpenC
               href={getWhatsAppUrl(WHATSAPP_CONFIG.defaultHeroMessage)}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-2.5 rounded-xl bg-emerald-600/20 text-emerald-300 border border-emerald-500/30 font-semibold text-xs flex items-center justify-center gap-1.5"
+              aria-label="Chat on WhatsApp with Nexora Technologies"
+              className="w-full min-h-[44px] py-2.5 rounded-xl bg-emerald-600/20 active:scale-95 text-emerald-300 border border-emerald-500/30 font-semibold text-xs flex items-center justify-center gap-1.5"
             >
               <MessageCircle className="w-3.5 h-3.5" />
               <span>WhatsApp</span>
