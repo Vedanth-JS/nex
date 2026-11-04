@@ -26,7 +26,7 @@ export const LEAD_CONFIG = {
 };
 
 /**
- * Dispatch lead to Web3Forms -> delivers directly to contact.nexoratecnologies@gmail.com
+ * Dispatch lead to Web3Forms -> delivers directly to registered email
  */
 export async function sendLeadToEmail(lead: LeadPayload): Promise<{ success: boolean; message?: string }> {
   const accessKey = LEAD_CONFIG.web3FormsKey;
@@ -36,6 +36,21 @@ export async function sendLeadToEmail(lead: LeadPayload): Promise<{ success: boo
   }
 
   try {
+    const formattedMessage = `New website enquiry received via Nexora Technologies:
+
+Client Name: ${lead.fullName}
+Business Name: ${lead.businessName}
+Phone / WhatsApp: +91 ${lead.phone}
+Email: ${lead.email || 'Not provided'}
+Industry: ${lead.businessCategory}
+Requested Scope: ${lead.websiteType}
+Budget Tier: ${lead.budget}
+
+Project Requirements & Scope:
+${lead.projectDescription || 'No additional notes provided.'}
+
+Submitted At: ${lead.submittedAt || new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}`;
+
     const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: {
@@ -44,18 +59,17 @@ export async function sendLeadToEmail(lead: LeadPayload): Promise<{ success: boo
       },
       body: JSON.stringify({
         access_key: accessKey,
-        subject: `🚀 New Lead: ${lead.fullName} (${lead.businessName || 'Business'}) - ${lead.budget}`,
-        from_name: `${lead.fullName} (via Nexora Web)`,
-        to_email: LEAD_CONFIG.recipientEmail,
-        client_name: lead.fullName,
-        business_name: lead.businessName,
+        name: lead.fullName,
+        email: lead.email?.trim() || 'lead@nexora.tech',
         phone: lead.phone,
-        email: lead.email || 'Not provided',
+        subject: `🚀 New Client Lead: ${lead.fullName} - ${lead.businessName || 'Business'} (${lead.budget})`,
+        from_name: 'Nexora Web Leads',
+        message: formattedMessage,
+        business_name: lead.businessName,
         website_scope: lead.websiteType,
         business_category: lead.businessCategory,
         selected_tier: lead.budget,
-        project_description: lead.projectDescription || 'No additional notes provided.',
-        submitted_at: lead.submittedAt || new Date().toISOString(),
+        botcheck: '',
       }),
     });
 
