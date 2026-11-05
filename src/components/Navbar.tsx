@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { WHATSAPP_CONFIG, getWhatsAppUrl } from '../utils/whatsapp';
 import { DemoId } from '../types';
+import { scrollToSection } from '../utils/scroll';
 
 interface NavbarProps {
   onOpenDemo: (id: DemoId) => void;
@@ -57,10 +58,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenDemo: _onOpenDemo, onOpenC
     e.preventDefault();
     setActiveSection(id);
     setMobileMenuOpen(false);
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    scrollToSection(href);
   };
 
   return (

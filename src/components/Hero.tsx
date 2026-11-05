@@ -8,6 +8,7 @@ import { DemoId } from '../types';
 import { HeroParticles } from './HeroParticles';
 import { TiltCard } from './TiltCard';
 import { HeroStaticFallback } from './HeroStaticFallback';
+import { scrollToSection } from '../utils/scroll';
 
 // Lazy-load the 3D Hero scene with React.lazy + Suspense for optimal initial page load & Lighthouse performance
 const Hero3D = lazy(() => import('./Hero3D'));
@@ -19,8 +20,7 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ onOpenDemo }) => {
   const handleScrollTo = (e: React.MouseEvent, selector: string) => {
     e.preventDefault();
-    const el = document.querySelector(selector);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    scrollToSection(selector);
   };
 
   return (

@@ -210,7 +210,7 @@ export const Services: React.FC<ServicesProps> = ({
                       }}
                       className={`absolute inset-0 rounded-3xl p-6 sm:p-7 border transition-all duration-500 cursor-pointer flex flex-col justify-between ${
                         isActive
-                          ? 'border-aurora-amber/70 bg-aurora-elevated shadow-[0_25px_60px_rgba(255,181,71,0.28)] opacity-100 scale-100 z-30 ring-1 ring-aurora-amber/40'
+                          ? 'border-aurora-amber/70 bg-aurora-elevated shadow-[0_25px_60px_rgba(255,181,71,0.28)] opacity-100 scale-100 z-30 ring-1 ring-aurora-amber/40 pointer-events-auto'
                           : 'border-white/10 bg-aurora-surface/90 backdrop-blur-md opacity-40 hover:opacity-75 scale-95 shadow-xl'
                       }`}
                       style={{
@@ -264,24 +264,34 @@ export const Services: React.FC<ServicesProps> = ({
                       </div>
 
                       {/* Actions */}
-                      <div className="grid grid-cols-2 gap-2 pt-3 border-t border-white/10 mt-3 shrink-0">
+                      <div className="grid grid-cols-2 gap-2 pt-3 border-t border-white/10 mt-3 shrink-0 relative z-30 pointer-events-auto">
                         <button
+                          type="button"
+                          onMouseDown={(e) => e.stopPropagation()}
+                          onTouchStart={(e) => e.stopPropagation()}
                           onClick={(e) => {
                             e.stopPropagation();
+                            setActiveIndex(idx);
                             onOpenServiceDetail(srv.id);
                           }}
-                          className="py-2.5 rounded-xl btn-glass-secondary text-xs font-bold flex items-center justify-center gap-1 cursor-pointer"
+                          className="py-2.5 rounded-xl btn-glass-secondary text-xs font-bold flex items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all"
+                          aria-label={`Explore ${srv.title} details`}
                         >
                           <Info className="w-3.5 h-3.5 text-aurora-amber" />
                           <span>Explore</span>
                         </button>
 
                         <button
+                          type="button"
+                          onMouseDown={(e) => e.stopPropagation()}
+                          onTouchStart={(e) => e.stopPropagation()}
                           onClick={(e) => {
                             e.stopPropagation();
+                            setActiveIndex(idx);
                             onSelectService(srv.title);
                           }}
-                          className="py-2.5 rounded-xl btn-amber-cta text-xs font-bold flex items-center justify-center gap-1 cursor-pointer"
+                          className="py-2.5 rounded-xl btn-amber-cta text-xs font-bold flex items-center justify-center gap-1 cursor-pointer active:scale-95 transition-all shadow-[0_0_15px_rgba(255,181,71,0.3)]"
+                          aria-label={`Get quote for ${srv.title}`}
                         >
                           <span>Get Quote</span>
                           <ArrowRight className="w-3.5 h-3.5" />
@@ -385,18 +395,22 @@ export const Services: React.FC<ServicesProps> = ({
                   {/* Card Actions */}
                   <div className="grid grid-cols-2 gap-2.5 pt-4 border-t border-white/10 mt-auto">
                     <button
+                      type="button"
                       onClick={() => onOpenServiceDetail(srv.id)}
-                      className="py-3 rounded-xl btn-glass-secondary text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer"
+                      className="py-3 rounded-xl btn-glass-secondary text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-all"
+                      aria-label={`Explore ${srv.title} details`}
                     >
                       <Info className="w-3.5 h-3.5 text-aurora-amber" />
                       <span>Explore</span>
                     </button>
 
                     <button
+                      type="button"
                       onClick={() => onSelectService(srv.title)}
-                      className="py-3 rounded-xl btn-amber-cta text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer"
+                      className="py-3 rounded-xl btn-amber-cta text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-all shadow-md"
+                      aria-label={`Get quote for ${srv.title}`}
                     >
-                      <span>Get a Quote</span>
+                      <span>Get Quote</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>

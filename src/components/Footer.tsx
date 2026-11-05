@@ -7,6 +7,7 @@ import {
   MessageCircle,
 } from 'lucide-react';
 import { WHATSAPP_CONFIG, getWhatsAppUrl } from '../utils/whatsapp';
+import { scrollToSection } from '../utils/scroll';
 
 const InstagramIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -81,8 +82,7 @@ export const Footer: React.FC = () => {
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    scrollToSection(href);
   };
 
   return (

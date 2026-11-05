@@ -22,6 +22,7 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { DemoViewerModal } from './demos/DemoViewerModal';
 import { ConsultationModal } from './components/ConsultationModal';
 import { DemoId } from './types';
+import { registerLenisInstance, scrollToSection } from './utils/scroll';
 
 // Lazy-load single persistent 3D world
 const World3D = lazy(() => import('./components/3d/World3D'));
@@ -53,6 +54,8 @@ export function App() {
         smoothWheel: true,
       });
 
+      registerLenisInstance(lenis);
+
       const raf = (time: number) => {
         lenis?.raf(time);
         rafId = requestAnimationFrame(raf);
@@ -69,6 +72,7 @@ export function App() {
 
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
+      registerLenisInstance(null);
       lenis?.destroy();
       window.removeEventListener('mousemove', handleMouseMove);
     };
@@ -113,45 +117,68 @@ export function App() {
 
     // Smooth scroll to contact
     setTimeout(() => {
-      const contactEl = document.getElementById('contact');
-      if (contactEl) {
-        contactEl.scrollIntoView({ behavior: 'smooth' });
-      }
+      scrollToSection('#contact');
     }, 150);
   };
 
-  // From Services section
+  // From Services section (Get Quote)
   const handleSelectService = (serviceTitle: string) => {
-    if (serviceTitle.toLowerCase().includes('restaurant')) {
-      setTargetService('Restaurant Website');
-    } else if (serviceTitle.toLowerCase().includes('clinic') || serviceTitle.toLowerCase().includes('hospital')) {
-      setTargetService('Clinic Website');
-    } else if (serviceTitle.toLowerCase().includes('hotel') || serviceTitle.toLowerCase().includes('travel')) {
-      setTargetService('Hotel Website');
-    } else if (serviceTitle.toLowerCase().includes('commerce')) {
-      setTargetService('E-commerce Website');
-    } else if (serviceTitle.toLowerCase().includes('education')) {
-      setTargetService('Educational Website');
+    let service = 'Business Website';
+    let industry = 'Other Business';
+
+    const s = serviceTitle.toLowerCase();
+    if (s.includes('restaurant') || s.includes('cafe') || s.includes('food')) {
+      service = 'Restaurant Website';
+      industry = 'Restaurant / Cafe';
+    } else if (s.includes('clinic') || s.includes('hospital') || s.includes('doctor')) {
+      service = 'Clinic Website';
+      industry = 'Hospital / Clinic';
+    } else if (s.includes('hotel') || s.includes('resort')) {
+      service = 'Hotel Website';
+      industry = 'Hotel / Resort';
+    } else if (s.includes('travel')) {
+      service = 'Hotel Website';
+      industry = 'Travel Agency';
+    } else if (s.includes('commerce') || s.includes('store')) {
+      service = 'E-commerce Website';
+      industry = 'Retail Shop';
+    } else if (s.includes('education') || s.includes('coaching') || s.includes('institute')) {
+      service = 'Educational Website';
+      industry = 'Educational Institution';
+    } else if (s.includes('gym') || s.includes('fitness')) {
+      service = 'Gym Website';
+      industry = 'Gym & Fitness Centre';
+    } else if (s.includes('real estate') || s.includes('property')) {
+      service = 'Real Estate Website';
+      industry = 'Real Estate';
     } else {
-      setTargetService('Business Website');
+      service = 'Business Website';
+      industry = 'Professional Services';
     }
 
-    const contactEl = document.getElementById('contact');
-    if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
+    setTargetService(service);
+    setTargetIndustry(industry);
+
+    // Reliable smooth scroll to contact section
+    scrollToSection('#contact');
+
+    // Gently focus the first form field
+    setTimeout(() => {
+      const input = document.querySelector<HTMLInputElement>('#contact input[name="fullName"]');
+      if (input) input.focus();
+    }, 700);
   };
 
   // From Industries section
   const handleSelectIndustry = (industryName: string) => {
     setTargetIndustry(industryName);
-    const contactEl = document.getElementById('contact');
-    if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
+    scrollToSection('#contact');
   };
 
   // From Pricing section
   const handleSelectPlan = (planPackage: string) => {
     setTargetService(`Package: ${planPackage}`);
-    const contactEl = document.getElementById('contact');
-    if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
+    scrollToSection('#contact');
   };
 
   return (
@@ -195,10 +222,7 @@ export function App() {
 
         {/* 5. Business Problem Section: "Your Customers Are Online. Is Your Business?" */}
         <BusinessProblem 
-          onBuildWebsite={() => {
-            const contactEl = document.getElementById('contact');
-            if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
-          }} 
+          onBuildWebsite={() => scrollToSection('#contact')} 
         />
 
         {/* 6. Services Preview with 3D Tilt Cards */}
@@ -224,8 +248,7 @@ export function App() {
           onOpenDemo={handleOpenDemo}
           onSelectProject={(title) => {
             setTargetService(`Similar to ${title}`);
-            const contactEl = document.getElementById('contact');
-            if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
+            scrollToSection('#contact');
           }}
         />
 
@@ -243,10 +266,7 @@ export function App() {
 
         {/* What You Can Expect From Nexora (Transparent Trust & Quality Pillars) */}
         <ExpectationsSection 
-          onStartProject={() => {
-            const contactEl = document.getElementById('contact');
-            if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
-          }}
+          onStartProject={() => scrollToSection('#contact')}
         />
 
         {/* About Nexora */}
@@ -254,10 +274,7 @@ export function App() {
 
         {/* 10. Final Call to Action */}
         <FinalCTA 
-          onStartProject={() => {
-            const contactEl = document.getElementById('contact');
-            if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
-          }}
+          onStartProject={() => scrollToSection('#contact')}
         />
 
         {/* Contact & Lead Generation Section with 3D Budget Tiles */}

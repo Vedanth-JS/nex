@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { PRICING_PLANS, PRICING_DISCLAIMERS } from '../data/pricingData';
 import { Card3D } from './3d/Card3D';
+import { scrollToSection } from '../utils/scroll';
 
 interface PricingProps {
   onSelectPlan: (planName: string) => void;
@@ -274,11 +275,9 @@ export const Pricing: React.FC<PricingProps> = ({ onSelectPlan, onOpenConsultati
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <button
-              onClick={() => {
-                const contactEl = document.getElementById('contact');
-                if (contactEl) contactEl.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="px-8 py-4 rounded-xl btn-amber-cta text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer"
+              type="button"
+              onClick={() => scrollToSection('#contact')}
+              className="px-8 py-4 rounded-xl btn-amber-cta text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer active:scale-95 transition-all shadow-lg"
             >
               <span>GET A FREE QUOTE</span>
               <ArrowRight className="w-4 h-4" />
