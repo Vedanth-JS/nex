@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, PhoneCall, MessageCircle, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { getWhatsAppUrl, openWhatsApp, formatDisplayPhoneNumber, CONFIGURED_PHONE_NUMBER } from '../utils/whatsapp';
+import { stopLenis, startLenis } from '../utils/scroll';
 
 interface ConsultationModalProps {
   isOpen: boolean;
@@ -17,15 +18,18 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({ isOpen, on
   const [errorMessage, setErrorMessage] = useState('');
   const [fieldError, setFieldError] = useState('');
 
-  // Lock body scroll and mark modal state for floating widgets
+  // Lock body scroll, pause Lenis, and mark modal state for floating widgets
   useEffect(() => {
     if (isOpen) {
       document.body.setAttribute('data-modal-open', 'true');
+      stopLenis();
     } else {
       document.body.removeAttribute('data-modal-open');
+      startLenis();
     }
     return () => {
       document.body.removeAttribute('data-modal-open');
+      startLenis();
     };
   }, [isOpen]);
 
@@ -87,8 +91,15 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({ isOpen, on
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#07070D]/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg glass-card-3d rounded-3xl p-6 sm:p-8 border border-aurora-violet/40 bg-aurora-elevated shadow-2xl">
+    <div 
+      data-lenis-prevent
+      onWheel={(e) => e.stopPropagation()}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#07070D]/80 backdrop-blur-md animate-in fade-in duration-200"
+    >
+      <div 
+        data-lenis-prevent
+        className="relative w-full max-w-lg glass-card-3d rounded-3xl p-6 sm:p-8 border border-aurora-violet/40 bg-aurora-elevated shadow-2xl"
+      >
         {/* Close Button */}
         <button
           onClick={onClose}

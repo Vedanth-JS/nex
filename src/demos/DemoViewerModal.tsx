@@ -20,6 +20,7 @@ import {
 import { DemoId } from '../types';
 import { getWhatsAppUrl } from '../utils/whatsapp';
 import { DemoStateProvider } from './shared';
+import { stopLenis, startLenis } from '../utils/scroll';
 
 // Lazy-load each demo for code-splitting
 const RestaurantDemo = lazy(() => import('./RestaurantDemo').then(m => ({ default: m.RestaurantDemo })));
@@ -154,6 +155,7 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
   const [deviceView, setDeviceView] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const [showFeatures, setShowFeatures] = useState(false);
   const trapRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const activeDemo = DEMOS_LIST.find(d => d.id === activeDemoId) || DEMOS_LIST[0];
   const activeIdx = DEMO_IDS.indexOf(activeDemoId);
@@ -161,7 +163,14 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
   const goNext = () => onSelectDemo(DEMO_IDS[(activeIdx + 1) % DEMO_IDS.length]);
   const goPrev = () => onSelectDemo(DEMO_IDS[(activeIdx - 1 + DEMO_IDS.length) % DEMO_IDS.length]);
 
-  // Keyboard shortcuts + focus trap + scroll lock
+  // Reset demo scroll position to top when switching demos or switching device viewports
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [activeDemoId, deviceView]);
+
+  // Keyboard shortcuts + focus trap + scroll lock + Lenis pause
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
@@ -214,11 +223,13 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
       window.addEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'hidden';
       document.body.setAttribute('data-demo-modal-open', 'true');
+      stopLenis();
     }
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
       document.body.removeAttribute('data-demo-modal-open');
+      startLenis();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, activeIdx, showFeatures]);
@@ -245,10 +256,10 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
   // Device frame width classes - on mobile (< md), always 100% full-screen edge-to-edge
   const frameClass =
     deviceView === 'desktop'
-      ? 'w-full h-full md:rounded-2xl overflow-y-auto md:border md:border-white/10 md:shadow-[0_20px_70px_rgba(0,0,0,0.8)]'
+      ? 'w-full h-full md:rounded-2xl md:border md:border-white/10 md:shadow-[0_20px_70px_rgba(0,0,0,0.8)]'
       : deviceView === 'tablet'
-      ? 'w-full md:w-[768px] max-w-full md:my-4 md:rounded-3xl overflow-y-auto md:border-[6px] md:border-slate-700/80 md:shadow-[0_0_70px_rgba(0,0,0,0.9)] h-full md:max-h-[88vh]'
-      : 'w-full md:w-[390px] max-w-full md:my-4 md:rounded-3xl overflow-y-auto md:shadow-[0_0_70px_rgba(0,0,0,0.9)] h-full md:max-h-[88vh]';
+      ? 'w-full md:w-[768px] max-w-full h-full md:max-h-[calc(100%-1rem)] md:rounded-3xl md:border-[6px] md:border-slate-700/80 md:shadow-[0_0_70px_rgba(0,0,0,0.9)]'
+      : 'w-full md:w-[390px] max-w-full h-full md:max-h-[calc(100%-1rem)] md:rounded-3xl md:shadow-[0_0_70px_rgba(0,0,0,0.9)]';
 
   return (
     <div
@@ -256,6 +267,8 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
       aria-modal="true"
       aria-label={`Demo: ${activeDemo.name}`}
       ref={trapRef}
+      data-lenis-prevent
+      onWheel={(e) => e.stopPropagation()}
       className="fixed inset-0 z-50 flex flex-col bg-[#07070D]/98 backdrop-blur-3xl h-[100dvh] max-h-[100dvh] w-full overflow-hidden overscroll-contain pt-[env(safe-area-inset-top)] md:pt-0"
     >
       {/* ============================================================ */}
@@ -522,8 +535,23 @@ export const DemoViewerModal: React.FC<DemoViewerModalProps> = ({
       {/* ============================================================ */}
       {/* DEMO VIEWPORT AREA                                           */}
       {/* ============================================================ */}
-      <div className="flex-1 overflow-hidden md:overflow-auto bg-[#07070D] flex justify-center items-start p-0 md:p-4">
-        <div className={`w-full h-full md:h-auto overflow-y-auto overflow-x-hidden overscroll-contain transition-all duration-300 bg-[#07070D] ${frameClass}`}>
+      <div 
+        data-lenis-prevent
+        onWheel={(e) => {
+          e.stopPropagation();
+          // If scrolling over the backdrop/outer wrapper, forward to inner scroll container
+          if (e.target === e.currentTarget && scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop += e.deltaY;
+          }
+        }}
+        className="flex-1 min-h-0 overflow-hidden bg-[#07070D] flex justify-center items-center p-0 md:p-3"
+      >
+        <div 
+          ref={scrollContainerRef}
+          data-lenis-prevent
+          tabIndex={0}
+          className={`w-full h-full overflow-y-auto overflow-x-hidden overscroll-contain transition-all duration-300 bg-[#07070D] outline-none ${frameClass}`}
+        >
 
           {/* Mobile phone frame: notch + bezel - only on simulated desktop preview (>= md) */}
           {deviceView === 'mobile' && (

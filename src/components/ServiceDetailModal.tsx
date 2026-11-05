@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   X, 
   CheckCircle2, 
@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { MAIN_SERVICES } from '../data/servicesData';
 import { DemoId } from '../types';
+import { stopLenis, startLenis } from '../utils/scroll';
 
 interface ServiceDetailModalProps {
   isOpen: boolean;
@@ -27,6 +28,17 @@ export const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
   onGetQuote,
   onViewDemo
 }) => {
+  useEffect(() => {
+    if (isOpen) {
+      stopLenis();
+    } else {
+      startLenis();
+    }
+    return () => {
+      startLenis();
+    };
+  }, [isOpen]);
+
   if (!isOpen || !serviceId) return null;
 
   const service = MAIN_SERVICES.find(s => s.id === serviceId) || MAIN_SERVICES[0];
@@ -37,8 +49,15 @@ export const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#07070D]/85 backdrop-blur-xl animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl glass-card-3d rounded-3xl p-6 sm:p-10 border border-aurora-violet/40 bg-aurora-elevated shadow-[0_25px_70px_rgba(0,0,0,0.9)] max-h-[90vh] overflow-y-auto">
+    <div 
+      data-lenis-prevent
+      onWheel={(e) => e.stopPropagation()}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#07070D]/85 backdrop-blur-xl animate-in fade-in duration-200"
+    >
+      <div 
+        data-lenis-prevent
+        className="relative w-full max-w-2xl glass-card-3d rounded-3xl p-6 sm:p-10 border border-aurora-violet/40 bg-aurora-elevated shadow-[0_25px_70px_rgba(0,0,0,0.9)] max-h-[90vh] overflow-y-auto"
+      >
         
         {/* Close Button */}
         <button

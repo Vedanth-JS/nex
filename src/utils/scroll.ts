@@ -24,6 +24,35 @@ export function getLenisInstance(): Lenis | null {
 }
 
 /**
+ * Pause Lenis smooth scroll instance (e.g. when opening a modal/demo viewer)
+ * to prevent Lenis from intercepting touchpad/wheel events.
+ */
+export function stopLenis(): void {
+  const lenis = getLenisInstance();
+  if (lenis) {
+    try {
+      lenis.stop();
+    } catch {
+      // safe fallback
+    }
+  }
+}
+
+/**
+ * Resume Lenis smooth scroll instance (e.g. when modal/demo viewer closes).
+ */
+export function startLenis(): void {
+  const lenis = getLenisInstance();
+  if (lenis) {
+    try {
+      lenis.start();
+    } catch {
+      // safe fallback
+    }
+  }
+}
+
+/**
  * Universally reliable smooth scrolling that works seamlessly with Lenis
  * on desktop (>=768px) and native smooth scroll on mobile devices (<768px).
  */
@@ -54,3 +83,4 @@ export function scrollToSection(target: string | HTMLElement, offset: number = -
     });
   }
 }
+
